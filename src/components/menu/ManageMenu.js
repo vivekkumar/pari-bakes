@@ -3,9 +3,10 @@ import { connect } from "react-redux";
 import { firestoreConnect } from "react-redux-firebase";
 import { compose } from "redux";
 import { Redirect } from "react-router-dom";
+import { deleteMenuItem } from "../../store/actions/menuActions";
 
 import CollectionVList from "../common/CollectionVList";
-import CreateMenuItem from "./CreateMenuItem";
+import CreateMenuItem from "./CreateEditMenuItem";
 
 class ManageMenu extends Component {
   state = {
@@ -18,19 +19,31 @@ class ManageMenu extends Component {
     });
   };
 
+  deleteMenuitem = menuItem => {
+    this.props.deleteMenuItem(menuItem.id);
+  };
+
   getTemplate = item => {
     return (
       <div>
-        {item.title}
         <a
           href="#!"
-          className="secondary-content"
           onClick={e => {
             e.preventDefault();
             this.editMenuitem(item);
           }}
         >
-          <i className="material-icons green-text">edit</i>
+          {item.title}
+        </a>
+        <a
+          href="#!"
+          className="secondary-content"
+          onClick={e => {
+            e.preventDefault();
+            this.deleteMenuitem(item);
+          }}
+        >
+          <i className="material-icons red-text">delete</i>
         </a>
       </div>
     );
@@ -45,15 +58,18 @@ class ManageMenu extends Component {
         <div className="row">
           <div className="col m6">
             <div className="section">
-              <button
-                className="btn btn-floating green lighten-2"
-                onClick={e => {
-                  e.preventDefault();
-                  this.editMenuitem(null);
-                }}
-              >
-                <i className="material-icons">add</i>
-              </button>
+              <h4>
+                Menu Items
+                <button
+                  className="btn btn-floating green lighten-2 right"
+                  onClick={e => {
+                    e.preventDefault();
+                    this.editMenuitem({});
+                  }}
+                >
+                  <i className="material-icons">add</i>
+                </button>
+              </h4>
 
               <div className="section">
                 {menuItems && (
@@ -80,8 +96,15 @@ const mapStateToProps = state => {
     auth: state.firebase.auth
   };
 };
-
+const mapDispatchToProps = dispatch => {
+  return {
+    deleteMenuItem: menuItem => dispatch(deleteMenuItem(menuItem))
+  };
+};
 export default compose(
-  connect(mapStateToProps),
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  ),
   firestoreConnect([{ collection: "menuItems", orderBy: ["title", "desc"] }])
 )(ManageMenu);

@@ -12,20 +12,12 @@ class CreateMenu extends Component {
   state = {
     title: "",
     description: "",
-    sections: [],
-    availableMenuItems: []
+    sections: []
   };
+
   componentDidMount() {
     const elem = document.querySelector("#addSectionModal");
     this.addSectionModal = window.M.Modal.init(elem, {});
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (this.props.menuItems !== nextProps.menuItems) {
-      this.setState({
-        availableMenuItems: [...nextProps.menuItems]
-      });
-    }
   }
 
   componentWillUnmount() {
@@ -74,10 +66,10 @@ class CreateMenu extends Component {
     this.addSectionModal.open();
   };
   render() {
-    const { auth } = this.props;
+    const { auth, menuItems } = this.props;
     if (!auth.uid) return <Redirect to="/signin" />;
 
-    const { title, description, availableMenuItems, sections } = this.state;
+    const { title, description, sections } = this.state;
 
     return (
       <div className="container">
@@ -124,7 +116,7 @@ class CreateMenu extends Component {
             <h4>Create Menu Section</h4>
             <CreateMenuSection
               onCreate={this.addSection}
-              availableMenuItems={availableMenuItems}
+              availableMenuItems={menuItems}
             />
           </div>
         </div>

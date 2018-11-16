@@ -3,17 +3,39 @@ import React, { Component } from "react";
 import CollectionVList from "../common/CollectionVList";
 
 class CreateMenuSection extends Component {
-  state = {
-    heading: "",
-    menuItems: [],
-    error: { noItems: false, noHeading: false }
-  };
+  constructor(props) {
+    super(props);
 
-  handleChange = e => {
+    this.state = {
+      heading: "",
+      menuItems: [],
+      remainingItems: props.availableMenuItems || [],
+      error: { noItems: false, noHeading: false }
+    };
+
+    this.handleChange = this.handleChange.bind(this);
+    this.addSection = this.addSection.bind(this);
+    this.addMenuitem = this.addMenuitem.bind(this);
+    this.removeMenuItem = this.removeMenuItem.bind(this);
+    this.getAvailableItemTemplate = this.getAvailableItemTemplate.bind(this);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (
+      nextProps.availableMenuItems &&
+      nextProps.availableMenuItems !== this.props.availableMenuItems
+    ) {
+      this.setState({
+        remainingItems: nextProps.availableMenuItems
+      });
+    }
+  }
+
+  handleChange(e) {
     this.setState({
       [e.target.id]: e.target.value
     });
-  };
+  }
 
   addSection = e => {
     e.preventDefault();
@@ -31,20 +53,23 @@ class CreateMenuSection extends Component {
     }
   };
 
-  addMenuitem = item => {
+  addMenuitem(item) {
     this.setState(prevState => {
       return {
-        menuItems: [...prevState.menuItems, item]
+        menuItems: [...prevState.menuItems, item],
+        remainingItems: prevState.remainingItems.filter(
+          aItem => aItem.id !== item.id
+        )
       };
     });
-  };
+  }
 
   removeMenuItem = item => {
-    const menuItems = [...this.state.menuItems];
-    const indx = menuItems.indexOf(aItem => aItem.id === item.id);
-    menuItems.splice(indx, 1);
-    this.setState({
-      menuItems
+    this.setState(prevState => {
+      return {
+        menuItems: prevState.menuItems.filter(aItem => aItem.id !== item.id),
+        remainingItems: [...prevState.remainingItems, item]
+      };
     });
   };
 
@@ -83,15 +108,13 @@ class CreateMenuSection extends Component {
     );
   };
   render() {
-    const { menuItems } = this.state;
-    const { availableMenuItems } = this.props;
-
+    const { menuItems, remainingItems } = this.state;
     return (
       <form
         className="white row create_menu_section"
         onSubmit={this.addSection}
       >
-        <div className="input-field col m7">
+        <div className="input-field col m6">
           <input type="text" id="heading" onChange={this.handleChange} />
           <label htmlFor="heading">Section Heading</label>
           <CollectionVList
@@ -105,10 +128,10 @@ class CreateMenuSection extends Component {
           </div>
         </div>
 
-        <div className="input-field col m4 offset-m1">
+        <div className="input-field col m6">
           <h6>Select menu items</h6>
           <CollectionVList
-            items={availableMenuItems}
+            items={remainingItems}
             itemTemplate={this.getAvailableItemTemplate}
           />
         </div>

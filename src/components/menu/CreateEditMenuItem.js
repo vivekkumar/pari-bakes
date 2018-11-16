@@ -1,21 +1,20 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { createMenuItem } from "../../store/actions/menuActions";
+import { createMenuItem, editMenuItem } from "../../store/actions/menuActions";
 import { Redirect } from "react-router-dom";
 
-class CreateMenuItem extends Component {
+class CreateEditMenuItem extends Component {
   state = {
     title: "",
     description: "",
     price: 0,
     halfPrice: 0,
-    servings: 1,
-    id: null
+    servings: 1
   };
 
   componentWillReceiveProps(nextProps) {
     if (this.props.menuItem !== nextProps.menuItem) {
-      if (nextProps.menuItem) {
+      if (nextProps.menuItem.id) {
         this.setState({ ...nextProps.menuItem });
       } else {
         this.setState({
@@ -23,8 +22,7 @@ class CreateMenuItem extends Component {
           description: "",
           price: 0,
           halfPrice: 0,
-          servings: 1,
-          id: null
+          servings: 1
         });
       }
     }
@@ -38,14 +36,36 @@ class CreateMenuItem extends Component {
 
   handleSubmit = e => {
     e.preventDefault();
-    this.props.createMenuItem(this.state);
+    const id = this.props.menuItem.id;
+
+    const item = {
+      title: this.state.title,
+      description: this.state.description,
+      price: parseInt(this.state.price),
+      halfPrice: parseInt(this.state.halfPrice),
+      servings: parseInt(this.state.servings)
+    };
+
+    if (id) {
+      this.props.editMenuItem(id, item);
+    } else {
+      this.props.createMenuItem(item);
+    }
+    this.setState({
+      title: "",
+      description: "",
+      price: 0,
+      halfPrice: 0,
+      servings: 1
+    });
   };
 
   render() {
     const { auth } = this.props;
     if (!auth.uid) return <Redirect to="/signin" />;
 
-    const { id, title, description, price, halfPrice, servings } = this.state;
+    const { title, description, price, halfPrice, servings } = this.state;
+    const id = this.props.menuItem.id;
     return (
       <div className="container">
         <form className="white" onSubmit={this.handleSubmit}>
@@ -116,11 +136,12 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    createMenuItem: project => dispatch(createMenuItem(project))
+    createMenuItem: menuItem => dispatch(createMenuItem(menuItem)),
+    editMenuItem: (id, menuItem) => dispatch(editMenuItem(id, menuItem))
   };
 };
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(CreateMenuItem);
+)(CreateEditMenuItem);

@@ -29,6 +29,7 @@ export const createMenuItem = menuItem => {
     const firestore = getFirestore();
     const profile = getState().firebase.profile;
     const authorId = getState().firebase.auth.uid;
+
     firestore
       .collection("menuItems")
       .add({
@@ -39,10 +40,50 @@ export const createMenuItem = menuItem => {
         createdAt: new Date()
       })
       .then(() => {
-        dispatch({ type: MenuActionTypes.CREATE_MENU_ITEM_SUCCESS, menuItem });
+        dispatch({
+          type: MenuActionTypes.CREATE_MENU_ITEM_SUCCESS,
+          menuItem
+        });
       })
       .catch(err => {
         dispatch({ type: MenuActionTypes.CREATE_MENU_ITEM_ERROR }, err);
+      });
+  };
+};
+
+export const editMenuItem = (id, menuItem) => {
+  return (dispatch, getState, { getFirestore }) => {
+    const firestore = getFirestore();
+    firestore
+      .collection("menuItems")
+      .doc(id)
+      .update({
+        ...menuItem
+      })
+      .then(() => {
+        dispatch({
+          type: MenuActionTypes.CREATE_MENU_ITEM_SUCCESS,
+          menuItem
+        });
+      })
+      .catch(err => {
+        dispatch({ type: MenuActionTypes.CREATE_MENU_ITEM_ERROR }, err);
+      });
+  };
+};
+
+export const deleteMenuItem = id => {
+  return (dispatch, getState, { getFirestore }) => {
+    const firestore = getFirestore();
+    firestore
+      .collection("menuItems")
+      .doc(id)
+      .delete()
+      .then(() => {
+        dispatch({ type: MenuActionTypes.DELETE_MENU_SUCCESS, id });
+      })
+      .catch(err => {
+        dispatch({ type: MenuActionTypes.DELETE_MENU_ERROR }, err);
       });
   };
 };
