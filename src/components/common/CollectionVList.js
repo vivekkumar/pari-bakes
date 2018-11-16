@@ -16,9 +16,9 @@ class CollectionVList extends Component {
       <ul className="collection">
         {items &&
           items.length &&
-          items.map(item => {
+          items.map((item, index) => {
             return (
-              <li className="collection-item" key={item.id}>
+              <li className="collection-item" key={item.id || index}>
                 {itemTemplate(item, items)}
               </li>
             );

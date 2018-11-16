@@ -1,7 +1,7 @@
 const allLinks = {
   manageuUsers: { title: "Manage Users", url: "/manageusers" },
   dashboard: { title: "Dashboard", url: "/" },
-  manageMenus: { title: "Manage Menus", url: "/menus" },
+  manageMenus: { title: "Manage Menu", url: "/managemenu" },
   manageOrders: { title: "Manage Orders", url: "/orders" },
   manageCart: { title: "Cart", url: "/cart" }
 };

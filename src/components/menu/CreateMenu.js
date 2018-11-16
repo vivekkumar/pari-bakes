@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { firestoreConnect } from "react-redux-firebase";
 import { compose } from "redux";
 import { createMenu } from "../../store/actions/menuActions";
-import { Redirect, Link } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 import MenuSection from "./MenuSection";
 import CollectionVList from "../common/CollectionVList";
 import CreateMenuSection from "./CreateMenuSection";
@@ -51,15 +51,30 @@ class CreateMenu extends Component {
     this.addSectionModal.close();
   };
 
+  deleteSection = section => {};
+
   getSections = section => {
-    return <MenuSection {...section} />;
+    return (
+      <div className="">
+        <button
+          className="btn btn-floating red lighten-1"
+          onClick={e => {
+            e.preventDefault();
+            this.deleteSection(section);
+          }}
+        >
+          <i className="material-icons">remove</i>
+        </button>
+        <MenuSection {...section} />
+      </div>
+    );
   };
   showAddSection = e => {
     e.preventDefault();
     this.addSectionModal.open();
   };
   render() {
-    const { auth, menuItems } = this.props;
+    const { auth } = this.props;
     if (!auth.uid) return <Redirect to="/signin" />;
 
     const { title, description, availableMenuItems, sections } = this.state;

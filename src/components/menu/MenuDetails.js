@@ -2,12 +2,11 @@ import React from "react";
 import { connect } from "react-redux";
 import { firestoreConnect } from "react-redux-firebase";
 import { compose } from "redux";
-import { Redirect } from "react-router-dom";
 import moment from "moment";
 
 const MenuDetails = props => {
-  const { menu, auth } = props;
-  if (!auth.uid) return <Redirect to="/signin" />;
+  const { menu } = props;
+
   if (menu) {
     return (
       <div className="container section menu-preview z-depth-4">
@@ -59,10 +58,16 @@ const MenuDetails = props => {
 
 const mapStateToProps = (state, ownProps) => {
   const id = ownProps.match.params.id;
-  const menus = state.firestore.data.menu;
-  const menu = menus ? menus[id] : null;
+  const menus = state.firestore.ordered.menu;
+  let menu = null;
+
+  if (id) {
+    menu = menus && menus.filter(menu => menu.id === id);
+  } else {
+    menu = menus && menus.filter(menu => menu.active);
+  }
   return {
-    menu: menu,
+    menu: menu ? menu[0] : null,
     auth: state.firebase.auth
   };
 };
@@ -71,7 +76,8 @@ export default compose(
   connect(mapStateToProps),
   firestoreConnect([
     {
-      collection: "menu"
+      collection: "menu",
+      orderBy: ["createdAt", "desc"]
     }
   ])
 )(MenuDetails);
