@@ -4,6 +4,8 @@ import { firestoreConnect } from "react-redux-firebase";
 import { compose } from "redux";
 import moment from "moment";
 
+import MenuSection from "./MenuSection";
+
 const MenuDetails = props => {
   const { menu } = props;
 
@@ -17,24 +19,7 @@ const MenuDetails = props => {
             <div className="section">
               {menu.sections &&
                 menu.sections.map((section, i) => {
-                  return (
-                    <div key={i}>
-                      <h4 className="center-align">{section.heading}</h4>
-                      {section.menuItems &&
-                        section.menuItems.map(menuItem => {
-                          return (
-                            <blockquote key={menuItem.id}>
-                              <div className="right">
-                                {menuItem.price}
-                                /-
-                              </div>
-                              <h5>{menuItem.title}</h5>
-                              <div>{menuItem.description}</div>
-                            </blockquote>
-                          );
-                        })}
-                    </div>
-                  );
+                  return <MenuSection key={i} {...section} />;
                 })}
             </div>
           </div>
@@ -50,7 +35,7 @@ const MenuDetails = props => {
   } else {
     return (
       <div className="container center">
-        <p>Loading project...</p>
+        <p>Loading menu...</p>
       </div>
     );
   }

@@ -10,7 +10,7 @@ class MenuSection extends Component {
           {menuItems.map((item, i) => {
             return (
               <li key={i}>
-                <span className="right bold">{item.price}</span>
+                <span className="right bold">{item.price}/-</span>
                 <div className="menu-section-heading">{item.title}</div>
                 <small>{item.description}</small>
               </li>
