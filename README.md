@@ -1,1 +1,1 @@
-## Web app for online food odering
+## Web app for online food ordering
