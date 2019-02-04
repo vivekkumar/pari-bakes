@@ -70,7 +70,7 @@ export const createUser = newUser => {
             firstName: newUser.firstName,
             lastName: newUser.lastName,
             initials: newUser.firstName[0] + newUser.lastName[0],
-            type: parseInt(newUser.userType)
+            type: parseInt(newUser.userType, 10)
           });
       })
       .then(() => {

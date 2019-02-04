@@ -6,6 +6,7 @@ import { firestoreConnect } from "react-redux-firebase";
 import { compose } from "redux";
 import { Redirect, Link } from "react-router-dom";
 import { deleteMenu, activateMenu } from "../../store/actions/menuActions";
+import { Row, Col } from "react-bootstrap";
 
 class AdminDashboard extends Component {
   onDelete = menu => {
@@ -22,26 +23,26 @@ class AdminDashboard extends Component {
 
     return (
       <div className="dashboard container">
-        <div className="row">
-          <div className="col s12 m6">
-            <div className="section">
-              <Link to="/createmenu">
-                <button className="btn btn-primary btn-large">
-                  Create Menu
-                </button>
-              </Link>
-              <MenuList
-                menus={menus}
-                menuItems={menuItems}
-                onDelete={this.onDelete}
-                onActivate={this.onActivate}
-              />
-            </div>
-          </div>
-          <div className="col s12 m5 offset-m1">
+        <Row>
+          <Col sm={8}>
+            <Link
+              to="/createmenu"
+              className="btn btn-primary btn-lg"
+              style={{ marginBottom: "1em" }}
+            >
+              Create Menu
+            </Link>
+            <MenuList
+              menus={menus}
+              menuItems={menuItems}
+              onDelete={this.onDelete}
+              onActivate={this.onActivate}
+            />
+          </Col>
+          <Col sm={4}>
             <Notifications notifications={notifications} />
-          </div>
-        </div>
+          </Col>
+        </Row>
       </div>
     );
   }

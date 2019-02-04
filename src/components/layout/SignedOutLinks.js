@@ -1,15 +1,16 @@
-import React from 'react'
-import { NavLink } from 'react-router-dom'
+import React from "react";
+
+import { Navbar, Nav } from "react-bootstrap";
 
 const SignedOutLinks = () => {
   return (
-    <div>
-      <ul className="right">
-        <li><NavLink to='/signup'>Signup</NavLink></li>
-        <li><NavLink to='/signin'>Login</NavLink></li>
-      </ul>
-    </div>
-  )
-}
+    <Navbar.Collapse id="basic-navbar-nav">
+      <Nav>
+        <Nav.Link href="/signup">Signup</Nav.Link>
+        <Nav.Link href="/signin">Login</Nav.Link>
+      </Nav>
+    </Navbar.Collapse>
+  );
+};
 
-export default SignedOutLinks
+export default SignedOutLinks;

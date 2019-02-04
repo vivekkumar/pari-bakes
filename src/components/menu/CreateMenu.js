@@ -4,122 +4,136 @@ import { firestoreConnect } from "react-redux-firebase";
 import { compose } from "redux";
 import { createMenu } from "../../store/actions/menuActions";
 import { Redirect } from "react-router-dom";
-import MenuSection from "./MenuSection";
+import MenuSubCategory from "./MenuSubCategory";
 import CollectionVList from "../common/CollectionVList";
-import CreateMenuSection from "./CreateMenuSection";
+import CreateMenuCategory from "./CreateMenuCategory";
+
+import { Card, Form } from "react-bootstrap";
 
 class CreateMenu extends Component {
-  state = {
-    title: "",
-    description: "",
-    sections: []
-  };
-
-  componentDidMount() {
-    const elem = document.querySelector("#addSectionModal");
-    this.addSectionModal = window.M.Modal.init(elem, {});
+  constructor(props) {
+    super(props);
+    this.state = {
+      title: "",
+      description: "",
+      categories: [],
+      availableMenuItems: props.menuItems || [],
+      showAddCategories: false
+    };
   }
 
-  componentWillUnmount() {
-    this.addSectionModal.destroy();
+  componentWillReceiveProps(nextProps) {
+    if (this.props.menuItems !== nextProps.menuItems) {
+      this.setState({
+        availableMenuItems: [...nextProps.menuItems]
+      });
+    }
   }
+
   handleChange = e => {
     this.setState({
       [e.target.id]: e.target.value
     });
   };
   handleSubmit = e => {
+    debugger;
     e.preventDefault();
     this.props.createMenu(this.state);
     this.props.history.push("/");
   };
 
-  addSection = section => {
+  createCategory = cat => {
     this.setState(prevState => {
       return {
-        sections: [...prevState.sections, section]
+        categories: [...prevState.categories, cat],
+        showAddCategories: false
       };
     });
-    this.addSectionModal.close();
   };
 
-  deleteSection = section => {};
+  removeCategory = cat => {};
 
-  getSections = section => {
-    return (
-      <div className="">
-        <button
-          className="btn btn-floating red lighten-1"
-          onClick={e => {
-            e.preventDefault();
-            this.deleteSection(section);
-          }}
-        >
-          <i className="material-icons">remove</i>
-        </button>
-        <MenuSection {...section} />
-      </div>
-    );
+  editCategory = cat => {};
+
+  getCategoryTemplate = category => {
+    const { heading, menuItems } = category.item;
+    return <MenuSubCategory heading={heading} menuItems={menuItems} />;
   };
-  showAddSection = e => {
+  showAddCategories = e => {
     e.preventDefault();
-    this.addSectionModal.open();
+    this.setState({
+      showAddCategories: true
+    });
   };
+
   render() {
-    const { auth, menuItems } = this.props;
+    const { auth } = this.props;
     if (!auth.uid) return <Redirect to="/signin" />;
 
-    const { title, description, sections } = this.state;
+    const {
+      title,
+      description,
+      availableMenuItems,
+      categories,
+      showAddCategories
+    } = this.state;
 
     return (
       <div className="container">
-        <form className="white" onSubmit={this.handleSubmit}>
-          <h5 className="grey-text text-darken-3">
-            Create a New Menu
-            <button className="btn pink lighten-1 right">Create Menu</button>
-          </h5>
-          <div className="input-field ">
-            <input
-              type="text"
-              id="title"
-              onChange={this.handleChange}
-              value={title}
-              placeholder={title}
-            />
-            <label htmlFor="title">Menu Title</label>
-          </div>
-          <div className="input-field">
-            <textarea
-              id="description"
-              className="materialize-textarea"
-              onChange={this.handleChange}
-              value={description}
-              placeholder={description}
-            />
-            <label htmlFor="content">Menu Description</label>
-          </div>
-          <div className="input-field menu-sections">
-            <CollectionVList items={sections} itemTemplate={this.getSections} />
-          </div>
-          <div className="input-field">
-            <button
-              className="btn green lighten-1"
-              onClick={this.showAddSection}
-            >
-              Add Section
-            </button>
-          </div>
-        </form>
+        <Card>
+          <Card.Header>
+            <h1 className="text-center">Create menu</h1>
+          </Card.Header>
+          <Card.Body>
+            <Form onSubmit={this.handleSubmit}>
+              <Form.Group>
+                <Form.Label htmlFor="title">Menu Title</Form.Label>
+                <Form.Control
+                  type="text"
+                  id="title"
+                  onChange={this.handleChange}
+                  value={title}
+                  placeholder="Menu title..."
+                />
+              </Form.Group>
 
-        <div id="addSectionModal" className="modal">
-          <div className="modal-content">
-            <h4>Create Menu Section</h4>
-            <CreateMenuSection
-              onCreate={this.addSection}
-              availableMenuItems={menuItems}
-            />
-          </div>
-        </div>
+              <Form.Group>
+                <Form.Label htmlFor="content">Menu Description</Form.Label>
+                <Form.Control
+                  as="textarea"
+                  rows="3"
+                  id="description"
+                  onChange={this.handleChange}
+                  value={description}
+                  placeholder="Describe your menu..."
+                />
+              </Form.Group>
+              <div className="input-field menu-categories">
+                <CollectionVList
+                  items={categories}
+                  ItemTemplate={this.getCategoryTemplate}
+                />
+              </div>
+              <div className="input-field">
+                <button
+                  className="btn btn-info"
+                  onClick={this.showAddCategories}
+                >
+                  Add Category
+                </button>
+                <button type="submit" className="btn btn-success float-right">
+                  Save Menu
+                </button>
+              </div>
+            </Form>
+          </Card.Body>
+        </Card>
+
+        <CreateMenuCategory
+          show={showAddCategories}
+          onCreate={this.createCategory}
+          availableMenuItems={availableMenuItems}
+        />
       </div>
     );
   }

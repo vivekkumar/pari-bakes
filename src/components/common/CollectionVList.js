@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 
+import { ListGroup, ListGroupItem } from "react-bootstrap";
+
 class CollectionVList extends Component {
   onClickHandler = item => {
     const { onClick } = this.props;
@@ -7,24 +9,24 @@ class CollectionVList extends Component {
       onClick(item);
     }
   };
+
+  getItemsTemplate = items => {
+    const { ItemTemplate } = this.props;
+    return items.map((item, index) => {
+      return ItemTemplate ? (
+        <ItemTemplate item={item} key={index} />
+      ) : (
+        <ListGroupItem>{item.toString()}</ListGroupItem>
+      );
+    });
+  };
+
   render() {
-    const { items, itemTemplate } = this.props;
+    const { items } = this.props;
 
     if (!(items && items.length)) return null;
 
-    return (
-      <ul className="collection">
-        {items &&
-          items.length &&
-          items.map((item, index) => {
-            return (
-              <li className="collection-item" key={item.id || index}>
-                {itemTemplate(item, items)}
-              </li>
-            );
-          })}
-      </ul>
-    );
+    return <ListGroup>{this.getItemsTemplate(items)}</ListGroup>;
   }
 }
 

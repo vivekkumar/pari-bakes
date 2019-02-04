@@ -1,41 +1,54 @@
 import React from "react";
+import { Link } from "react-router-dom";
+import { Card } from "react-bootstrap";
 
-const MenuSummary = ({ menu, onDelete, onActivate }) => {
-  return (
-    <div className="card z-depth-1 project-summary">
-      <div className="card-content grey-text text-darken-3">
-        <button
-          className="btn btn-floating red lighten-1 active right"
-          onClick={e => {
-            e.preventDefault();
-            onDelete(menu);
-          }}
-        >
-          X
-        </button>
-        <span className="card-title ">{menu.title}</span>
-        <p>{menu.description}</p>
-        <p className="grey-text">{menu.price}</p>
-        <label
-          onClick={e => {
-            e.preventDefault();
-            onActivate(menu);
-          }}
-        >
-          <input
-            type="checkbox"
-            className="filled-in"
-            checked={menu.active}
-            onChange={e => {
+class MenuSummary extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      active: false
+    };
+  }
+
+  handleChange = e => {
+    const { menu, onActivate } = this.props;
+    e.preventDefault();
+    onActivate(menu);
+  };
+
+  render() {
+    const { menu, onDelete } = this.props;
+    return (
+      <Card key={menu.id}>
+        <Card.Body>
+          <button
+            className="btn btn-danger btn-sm pull-right"
+            onClick={e => {
               e.preventDefault();
-              onActivate(menu);
+              onDelete(menu);
             }}
-          />
-          <span>Activate</span>
-        </label>
-      </div>
-    </div>
-  );
-};
+          >
+            <i className="glyphicon glyphicon-remove" />
+          </button>
+          <Link to={"/menu/" + menu.id}>
+            <h4>{menu.title}</h4>
+            <p>{menu.description}</p>
+          </Link>
+          <p className="grey-text">{menu.price}</p>
+          <label>
+            <input
+              type="checkbox"
+              className="filled-in"
+              checked={menu.active}
+              onChange={this.handleChange}
+            />
+            {" Activate"}
+          </label>
+        </Card.Body>
+      </Card>
+    );
+  }
+}
 
 export default MenuSummary;
