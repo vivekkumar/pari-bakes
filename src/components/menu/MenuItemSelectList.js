@@ -43,7 +43,6 @@ class MenuItemSelectList extends Component {
                 <Form.Group>
                   <Form.Check
                     type="checkbox"
-                    inline
                     onChange={this.onClickHandler}
                     data-item={JSON.stringify(item)}
                     label={item.title}

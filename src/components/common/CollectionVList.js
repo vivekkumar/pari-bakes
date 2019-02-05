@@ -14,7 +14,7 @@ class CollectionVList extends Component {
     const { ItemTemplate } = this.props;
     return items.map((item, index) => {
       return ItemTemplate ? (
-        <ItemTemplate item={item} key={index} />
+        <ItemTemplate item={item} key={index} index={index} />
       ) : (
         <ListGroupItem>{item.toString()}</ListGroupItem>
       );

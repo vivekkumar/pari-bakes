@@ -2,6 +2,8 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Card } from "react-bootstrap";
 
+import ActionControls from "../common/ActionControls";
+
 class MenuSummary extends React.Component {
   constructor(props) {
     super(props);
@@ -9,6 +11,8 @@ class MenuSummary extends React.Component {
     this.state = {
       active: false
     };
+
+    this.actions = [ActionControls.Types.REMOVE];
   }
 
   handleChange = e => {
@@ -17,20 +21,20 @@ class MenuSummary extends React.Component {
     onActivate(menu);
   };
 
-  render() {
+  handleActions = type => {
     const { menu, onDelete } = this.props;
+    onDelete(menu);
+  };
+
+  render() {
+    const { menu } = this.props;
     return (
-      <Card key={menu.id}>
+      <Card key={menu.id} className="mb-4 shadow-sm">
         <Card.Body>
-          <button
-            className="btn btn-danger btn-sm pull-right"
-            onClick={e => {
-              e.preventDefault();
-              onDelete(menu);
-            }}
-          >
-            <i className="glyphicon glyphicon-remove" />
-          </button>
+          <ActionControls
+            actions={this.actions}
+            onAction={this.handleActions}
+          />
           <Link to={"/menu/" + menu.id}>
             <h4>{menu.title}</h4>
             <p>{menu.description}</p>

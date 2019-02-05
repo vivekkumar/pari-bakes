@@ -25,13 +25,13 @@ class AdminDashboard extends Component {
       <div className="dashboard container">
         <Row>
           <Col sm={8}>
-            <Link
-              to="/createmenu"
-              className="btn btn-primary btn-lg"
-              style={{ marginBottom: "1em" }}
-            >
-              Create Menu
-            </Link>
+            <h1 className="display-4">
+              Menus
+              <Link to="/createmenu" className="ml-4 text-success">
+                <i className="fas fa-plus-circle" />
+              </Link>
+            </h1>
+
             <MenuList
               menus={menus}
               menuItems={menuItems}

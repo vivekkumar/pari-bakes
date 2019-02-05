@@ -15,12 +15,12 @@ const MenuDetails = props => {
     return (
       <div className="container">
         <Card className="section menu-preview">
-          <Card.Heading className="text-center">
+          <Card.Header className="text-center">
             <h1>{menu.title}</h1>
             {menu.description && (
-              <h5 className="center-align grey-text">"{menu.description}"</h5>
+              <h5 className="center-align grey-text">{menu.description}</h5>
             )}
-          </Card.Heading>
+          </Card.Header>
 
           <Card.Body>
             {menu.categories &&
@@ -34,6 +34,7 @@ const MenuDetails = props => {
                 );
               })}
           </Card.Body>
+
           <Card.Footer>
             <div className="text-right">
               Created by{" "}

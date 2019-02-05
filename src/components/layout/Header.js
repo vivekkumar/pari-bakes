@@ -17,7 +17,7 @@ class Header extends React.Component {
 
     return (
       <div>
-        <Navbar collapseOnSelect bg="dark" expand="lg" className="mb-5">
+        <Navbar collapseOnSelect bg="light" variant="light" className="mb-5">
           <Navbar.Brand>
             <Link to="/" className="brand-logo">
               Bakes

@@ -10,7 +10,7 @@ class CreateMenuCategory extends Component {
     this.state = {
       heading: "",
       menuItems: [],
-      availableMenuItems: [],
+      availableMenuItems: props.availableMenuItems || [],
       error: { noItems: false, noHeading: false },
       show: false
     };
@@ -51,7 +51,8 @@ class CreateMenuCategory extends Component {
         heading: "",
         menuItems: [],
         error: { noItems: false, noHeading: false },
-        availableMenuItems: this.props.availableMenuItems
+        availableMenuItems: this.props.availableMenuItems,
+        editiableCategory: null
       });
     }
   };
@@ -61,18 +62,6 @@ class CreateMenuCategory extends Component {
 
     this.setState({
       menuItems
-    });
-  };
-
-  removeMenuItem = item => {
-    const menuItems = [...this.state.menuItems];
-    const availableMenuItems = [...this.state.availableMenuItems, item];
-    const indx = menuItems.findIndex(aItem => aItem.id === item.id);
-    menuItems.splice(indx, 1);
-
-    this.setState({
-      menuItems,
-      availableMenuItems
     });
   };
 
@@ -93,27 +82,20 @@ class CreateMenuCategory extends Component {
         <Modal.Body>
           <Row>
             <Col sm={12}>
-              <Form
-                className=""
-                onSubmit={this.addSection}
-                style={{ margin: "0" }}
-              >
+              <Form onSubmit={this.addCategory}>
                 <Form.Group>
-                  <Form.Label>Section Title</Form.Label>
                   <Form.Control
                     type="text"
                     id="heading"
-                    placeholder="Section title"
+                    placeholder="Category title"
                     onChange={this.handleChange}
                   />
                 </Form.Group>
 
-                <Form.Group>
-                  <MenuItemSelectList
-                    menuItems={availableMenuItems}
-                    onClick={this.addMenuitem}
-                  />
-                </Form.Group>
+                <MenuItemSelectList
+                  menuItems={availableMenuItems}
+                  onClick={this.addMenuitem}
+                />
 
                 <Form.Group>
                   <button className="btn btn-info" onClick={this.addCategory}>

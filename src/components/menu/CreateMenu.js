@@ -7,6 +7,7 @@ import { Redirect } from "react-router-dom";
 import MenuSubCategory from "./MenuSubCategory";
 import CollectionVList from "../common/CollectionVList";
 import CreateMenuCategory from "./CreateMenuCategory";
+import ActionControls from "../common/ActionControls";
 
 import { Card, Form } from "react-bootstrap";
 
@@ -18,7 +19,8 @@ class CreateMenu extends Component {
       description: "",
       categories: [],
       availableMenuItems: props.menuItems || [],
-      showAddCategories: false
+      showAddCategories: false,
+      editableCategoryIndex: -1
     };
   }
 
@@ -36,13 +38,12 @@ class CreateMenu extends Component {
     });
   };
   handleSubmit = e => {
-    debugger;
     e.preventDefault();
     this.props.createMenu(this.state);
     this.props.history.push("/");
   };
 
-  createCategory = cat => {
+  createCategory = (cat, index) => {
     this.setState(prevState => {
       return {
         categories: [...prevState.categories, cat],
@@ -51,13 +52,69 @@ class CreateMenu extends Component {
     });
   };
 
-  removeCategory = cat => {};
+  removeCategory = catIndex => {
+    const cats = [...this.state.categories];
+    cats.splice(catIndex, 1);
 
-  editCategory = cat => {};
+    this.setState({ categories: cats });
+  };
 
-  getCategoryTemplate = category => {
-    const { heading, menuItems } = category.item;
-    return <MenuSubCategory heading={heading} menuItems={menuItems} />;
+  moveUp = catIndex => {
+    if (catIndex <= 0) return;
+    const cat = Object.assign({}, this.state.categories[catIndex]);
+    const cats = [...this.state.categories];
+    cats.splice(catIndex, 1);
+    cats.splice(catIndex - 1, 0, cat);
+
+    this.setState({ categories: cats });
+  };
+
+  moveDown = catIndex => {
+    const cats = [...this.state.categories];
+    if (catIndex >= cats.length - 1) return;
+    const cat = Object.assign({}, this.state.categories[catIndex]);
+    cats.splice(catIndex, 1);
+    cats.splice(catIndex + 1, 0, cat);
+
+    this.setState({ categories: cats });
+  };
+
+  handleControl = (type, index) => {
+    switch (type) {
+      case ActionControls.Types.MOVE_UP:
+        this.moveUp(index);
+        break;
+      case ActionControls.Types.MOVE_DOWN:
+        this.moveDown(index);
+        break;
+      case ActionControls.Types.EDIT:
+        this.editCategory(index);
+        break;
+      case ActionControls.Types.REMOVE:
+        this.removeCategory(index);
+        break;
+      default:
+    }
+  };
+
+  getCategoryTemplate = props => {
+    const { heading, menuItems } = props.item;
+    const index = props.index;
+    const actions = [
+      ActionControls.Types.MOVE_UP,
+      ActionControls.Types.MOVE_DOWN,
+      ActionControls.Types.REMOVE
+    ];
+    return (
+      <div className="shadow border rounded mb-4 p-3">
+        <ActionControls
+          index={index}
+          actions={actions}
+          onAction={this.handleControl}
+        />
+        <MenuSubCategory heading={heading} menuItems={menuItems} />
+      </div>
+    );
   };
   showAddCategories = e => {
     e.preventDefault();
@@ -75,7 +132,8 @@ class CreateMenu extends Component {
       description,
       availableMenuItems,
       categories,
-      showAddCategories
+      showAddCategories,
+      editableCategoryIndex
     } = this.state;
 
     return (
@@ -133,6 +191,7 @@ class CreateMenu extends Component {
           show={showAddCategories}
           onCreate={this.createCategory}
           availableMenuItems={availableMenuItems}
+          editableCategory={categories[editableCategoryIndex]}
         />
       </div>
     );

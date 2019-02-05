@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { signOut } from "../../store/actions/authActions";
 
@@ -15,18 +16,22 @@ class SignedInLinks extends React.Component {
         <Nav>
           {authLinks.map((link, i) => {
             return (
-              <Nav.Link key={i} to={link.url}>
-                {link.title}
-              </Nav.Link>
+              <Nav.Item key={i}>
+                <Link to={link.url}>{link.title}</Link>
+              </Nav.Item>
             );
           })}
-          <Nav.Link to={null} onClick={signOut}>
-            Log Out
-          </Nav.Link>
+          <Nav.Item>
+            <Link to={"null"} onClick={signOut}>
+              Log Out
+            </Link>
+          </Nav.Item>
 
-          <Nav.Link to="/" className="user-img">
-            {profile.initials} <small>{profile.flat}</small>
-          </Nav.Link>
+          <Nav.Item>
+            <Link to="/" className="user-img">
+              {profile.initials} <small>{profile.flat}</small>
+            </Link>
+          </Nav.Item>
         </Nav>
       </Navbar.Collapse>
     );
