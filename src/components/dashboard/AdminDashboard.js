@@ -24,7 +24,7 @@ class AdminDashboard extends Component {
     return (
       <div className="dashboard container">
         <Row>
-          <Col sm={8}>
+          <Col sm={6}>
             <h1 className="display-4">
               Menus
               <Link to="/createmenu" className="ml-4 text-success">
@@ -39,7 +39,7 @@ class AdminDashboard extends Component {
               onActivate={this.onActivate}
             />
           </Col>
-          <Col sm={4}>
+          <Col sm={{ span: 4, offset: 2 }}>
             <Notifications notifications={notifications} />
           </Col>
         </Row>

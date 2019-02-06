@@ -7,13 +7,13 @@ const Notifications = props => {
   const { notifications } = props;
   return (
     <div className="section">
-      <h2 className="card-title">Notifications</h2>
+      <h1 className="display-4">Notifications</h1>
       {notifications &&
         notifications.map(item => {
           return (
-            <Card key={item.id}>
+            <Card key={item.id} className="mb-4 shadow-sm">
               <Card.Body>
-                <span className="pink-text">{item.user}, </span>
+                <em className="pink-text">{item.user}, </em>
                 <span>{item.content}</span>
               </Card.Body>
               <Card.Footer>

@@ -37,8 +37,8 @@ class MenuSummary extends React.Component {
           />
           <Link to={"/menu/" + menu.id}>
             <h4>{menu.title}</h4>
-            <p>{menu.description}</p>
           </Link>
+          <p>{menu.description}</p>
           <p className="grey-text">{menu.price}</p>
           <label>
             <input

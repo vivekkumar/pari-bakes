@@ -12,3 +12,14 @@ body {
   /* background-color: rgb(41, 19, 19); */
   min-height: 100%;
 }
+
+/* Header */
+.header .nav-item a {
+  padding: 1em;
+  text-decoration: none;
+  color: #444;
+}
+
+.header .nav-item a:hover {
+  background: #ccc;
+}

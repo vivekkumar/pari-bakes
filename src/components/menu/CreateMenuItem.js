@@ -3,11 +3,15 @@ import { connect } from "react-redux";
 import { createMenuItem } from "../../store/actions/menuActions";
 import { Redirect } from "react-router-dom";
 
+import { Card, Form } from "react-bootstrap";
+
 class CreateMenuItem extends Component {
   state = {
     title: "",
     description: "",
-    sections: []
+    price: 0,
+    halfPrice: 0,
+    servings: 1
   };
   handleChange = e => {
     this.setState({
@@ -16,36 +20,78 @@ class CreateMenuItem extends Component {
   };
   handleSubmit = e => {
     e.preventDefault();
-    this.props.createProject(this.state);
-    this.props.history.push("/");
+    this.props.createMenuItem(this.state);
+    this.props.history.push("/menus");
   };
   render() {
     const { auth } = this.props;
     if (!auth.uid) return <Redirect to="/signin" />;
     return (
       <div className="container">
-        <form className="white" onSubmit={this.handleSubmit}>
-          <h5 className="grey-text text-darken-3">Create a New Menu Items</h5>
-          <div className="input-field">
-            <input type="text" id="title" onChange={this.handleChange} />
-            <label htmlFor="title">Title</label>
-          </div>
-          <div className="input-field">
-            <textarea
-              id="content"
-              className="materialize-textarea"
-              onChange={this.handleChange}
-            />
-            <label htmlFor="content">Describe the taste!</label>
-          </div>
-          <div className="input-field">
-            <input type="number" id="price" onChange={this.handleChange} />
-            <label htmlFor="price">Price</label>
-          </div>
-          <div className="input-field">
-            <button className="btn pink lighten-1">Create</button>
-          </div>
-        </form>
+        <Card>
+          <Card.Header>
+            <h5 className="text-center">Create New Menu Item</h5>
+          </Card.Header>
+          <Card.Body>
+            <Form className="white" onSubmit={this.handleSubmit}>
+              <Form.Group>
+                <Form.Control
+                  type="text"
+                  id="title"
+                  onChange={this.handleChange}
+                  placeholder="Title..."
+                />
+              </Form.Group>
+
+              <Form.Group>
+                <Form.Control
+                  as="textarea"
+                  rows="3"
+                  id="description"
+                  onChange={this.handleChange}
+                  placeholder="Describe the taste..."
+                />
+              </Form.Group>
+
+              <Form.Group>
+                <Form.Control
+                  type="text"
+                  id="price"
+                  onChange={this.handleChange}
+                  placeholder="Price"
+                />
+              </Form.Group>
+
+              <Form.Group>
+                <Form.Control
+                  type="text"
+                  id="halfPrice"
+                  onChange={this.handleChange}
+                  placeholder="Half Portion Price"
+                />
+              </Form.Group>
+
+              <Form.Group>
+                <Form.Label>Servings</Form.Label>
+                <Form.Control
+                  as="select"
+                  id="servings"
+                  onChange={this.handleChange}
+                >
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                  <option value="5">5</option>
+                </Form.Control>
+              </Form.Group>
+
+              <Form.Group>
+                <button className="btn btn-success">Create</button>
+              </Form.Group>
+            </Form>
+          </Card.Body>
+        </Card>
       </div>
     );
   }
@@ -59,7 +105,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    createMenuItem: project => dispatch(createMenuItem(project))
+    createMenuItem: menuItem => dispatch(createMenuItem(menuItem))
   };
 };
 

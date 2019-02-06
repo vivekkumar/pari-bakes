@@ -59,9 +59,18 @@ const MenuDetails = props => {
 };
 
 const mapStateToProps = (state, ownProps) => {
-  const id = ownProps.match.params.id;
-  const menus = state.firestore.data.menu;
-  const menu = menus ? menus[id] : null;
+  let id = null;
+  const menus = state.firestore.ordered.menu;
+  let menu = null;
+
+  if (ownProps.match && ownProps.match.params && ownProps.match.params.id) {
+    id = ownProps.match.params.id;
+  }
+  console.log(ownProps.match.params);
+  if (menus) {
+    if (id) menu = menus.filter(m => m.id === id)[0];
+    else menu = menus.filter(m => m.active)[0];
+  }
   return {
     menu: menu,
     auth: state.firebase.auth
@@ -70,9 +79,5 @@ const mapStateToProps = (state, ownProps) => {
 
 export default compose(
   connect(mapStateToProps),
-  firestoreConnect([
-    {
-      collection: "menu"
-    }
-  ])
+  firestoreConnect([{ collection: "menu", orderBy: ["title", "desc"] }])
 )(MenuDetails);
