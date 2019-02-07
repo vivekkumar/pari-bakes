@@ -2,21 +2,41 @@ import React from "react";
 import { connect } from "react-redux";
 import { removeUser } from "../../store/actions/authActions";
 
+import { Link } from "react-router-dom";
+import { Card } from "react-bootstrap";
+
 const UserSummary = ({ user, userTypes, removeUser }) => {
   const userType =
-    userTypes && userTypes.filter(type => user.type === type.value);
+    userTypes && userTypes.filter(type => user.type === type.value)[0];
+
+  let userBadge = "badge ";
+
+  if (userType) {
+    if (userType.value === 0) {
+      userBadge += "badge-danger";
+    } else if (userType.value === 1) {
+      userBadge += "badge-success";
+    } else {
+      userBadge += "badge-primary";
+    }
+  }
+
   return (
-    <div className="card z-depth-1 user-summary">
-      <div className="card-content grey-text text-darken-3">
+    <Card className="shadow-sm my-4">
+      <Card.Body>
         <span className="card-title ">
-          {user.firstName} {user.lastName}
+          <Link to={"/user/" + user.id} key={user.id}>
+            {user.firstName} {user.lastName}
+          </Link>
         </span>
-        <p>{userType && userType[0].title}</p>
+        <span className={`${userBadge} mx-2`}>
+          {userType && userType.title}
+        </span>
         <button className="btn btn-danger" onClick={removeUser}>
           Delete
         </button>
-      </div>
-    </div>
+      </Card.Body>
+    </Card>
   );
 };
 

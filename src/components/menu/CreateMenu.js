@@ -79,7 +79,7 @@ class CreateMenu extends Component {
     this.setState({ categories: cats });
   };
 
-  handleControl = (type, index) => {
+  handleAction = (type, index) => {
     switch (type) {
       case ActionControls.Types.MOVE_UP:
         this.moveUp(index);
@@ -108,9 +108,9 @@ class CreateMenu extends Component {
     return (
       <div className="shadow border rounded mb-4 p-3">
         <ActionControls
-          index={index}
+          data={index}
           actions={actions}
-          onAction={this.handleControl}
+          onAction={this.handleAction}
         />
         <MenuSubCategory heading={heading} menuItems={menuItems} />
       </div>

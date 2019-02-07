@@ -22,6 +22,7 @@ class ManageMenu extends Component {
       });
     }
   }
+
   handleChange = e => {
     const str = e.target.value.toLowerCase();
 

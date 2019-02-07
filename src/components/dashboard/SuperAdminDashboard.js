@@ -4,7 +4,9 @@ import Notifications from "./Notifications";
 import { connect } from "react-redux";
 import { firestoreConnect } from "react-redux-firebase";
 import { compose } from "redux";
-import { Redirect } from "react-router-dom";
+import { Redirect, Link } from "react-router-dom";
+
+import { Row, Col } from "react-bootstrap";
 
 class SuperAdminDashboard extends Component {
   render() {
@@ -13,14 +15,21 @@ class SuperAdminDashboard extends Component {
 
     return (
       <div className="dashboard container">
-        <div className="row">
-          <div className="col s12 m6">
+        <Row>
+          <Col sm={6}>
+            <h1 className="display-4">
+              Menus
+              <Link to="/createmenu" className="ml-4 text-success">
+                <i className="fas fa-plus-circle" />
+              </Link>
+            </h1>
             <MenuList menus={menus} />
-          </div>
-          <div className="col s12 m5 offset-m1">
+          </Col>
+
+          <Col sm={{ span: 4, offset: 2 }}>
             <Notifications notifications={notifications} />
-          </div>
-        </div>
+          </Col>
+        </Row>
       </div>
     );
   }

@@ -47,22 +47,22 @@ class ActionControls extends Component {
 
   moveUp = e => {
     e.preventDefault();
-    this.props.onAction(ActionControls.Types.MOVE_UP, this.props.index);
+    this.props.onAction(ActionControls.Types.MOVE_UP, this.props.data);
   };
 
   moveDown = e => {
     e.preventDefault();
-    this.props.onAction(ActionControls.Types.MOVE_DOWN, this.props.index);
+    this.props.onAction(ActionControls.Types.MOVE_DOWN, this.props.data);
   };
 
   edit = e => {
     e.preventDefault();
-    this.props.onAction(ActionControls.Types.EDIT, this.props.index);
+    this.props.onAction(ActionControls.Types.EDIT, this.props.data);
   };
 
   remove = e => {
     e.preventDefault();
-    this.props.onAction(ActionControls.Types.REMOVE, this.props.index);
+    this.props.onAction(ActionControls.Types.REMOVE, this.props.data);
   };
 
   render() {
