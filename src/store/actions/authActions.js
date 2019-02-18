@@ -5,7 +5,7 @@ export const signIn = credentials => {
     firebase
       .auth()
       .signInWithEmailAndPassword(credentials.email, credentials.password)
-      .then(() => {
+      .then(d => {
         dispatch({ type: "LOGIN_SUCCESS" });
       })
       .catch(err => {
@@ -82,14 +82,15 @@ export const createUser = newUser => {
   };
 };
 
-export const removeUser = newUser => {
+export const removeUser = user => {
   return (dispatch, getState, { getFirebase, getFirestore }) => {
     const firebase = getFirebase();
     const firestore = getFirestore();
+    debugger;
 
     firebase
       .auth()
-      .getUser(newUser.email)
+      .getUser(user.email)
       .delete()
       .then(resp => {
         return firestore
@@ -98,10 +99,10 @@ export const removeUser = newUser => {
           .delete();
       })
       .then(() => {
-        dispatch({ type: "SIGNUP_SUCCESS" });
+        dispatch({ type: "USER_REMOVE_SUCCESS" });
       })
       .catch(err => {
-        dispatch({ type: "SIGNUP_ERROR", err });
+        dispatch({ type: "USER_REMOVE_SUCCESS", err });
       });
   };
 };

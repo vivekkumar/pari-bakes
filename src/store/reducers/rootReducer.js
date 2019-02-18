@@ -1,5 +1,6 @@
 import authReducer from "./authReducer";
 import menuReducer from "./menuReducer";
+import cartReducer from "./cartReducer";
 import { combineReducers } from "redux";
 import { firestoreReducer } from "redux-firestore";
 import { firebaseReducer } from "react-redux-firebase";
@@ -7,6 +8,7 @@ import { firebaseReducer } from "react-redux-firebase";
 const rootReducer = combineReducers({
   auth: authReducer,
   menu: menuReducer,
+  cart: cartReducer,
   firestore: firestoreReducer,
   firebase: firebaseReducer
 });

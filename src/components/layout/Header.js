@@ -17,10 +17,21 @@ class Header extends React.Component {
 
     return (
       <div className="header">
-        <Navbar collapseOnSelect bg="light" variant="light" className="mb-5">
+        <Navbar
+          collapseOnSelect
+          expand="md"
+          bg="light"
+          variant="light"
+          className="mb-5"
+        >
           <Navbar.Brand>
             <Link to="/" className="brand-logo">
-              Bakes
+              <img
+                src="/img/logo.jpg"
+                alt="Pari Bakes!"
+                className="rounded-circle border"
+              />{" "}
+              Pari Bakes!
             </Link>
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />

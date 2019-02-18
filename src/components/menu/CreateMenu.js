@@ -39,7 +39,14 @@ class CreateMenu extends Component {
   };
   handleSubmit = e => {
     e.preventDefault();
-    this.props.createMenu(this.state);
+    const { title, description, categories } = this.state;
+
+    this.props.createMenu({
+      title,
+      description,
+      categories
+    });
+
     this.props.history.push("/");
   };
 

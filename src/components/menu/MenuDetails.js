@@ -5,12 +5,15 @@ import { compose } from "redux";
 import { Redirect } from "react-router-dom";
 import moment from "moment";
 
+import { addMenuItemToCart } from "../../store/actions/cartActions";
+
 import MenuSubCategory from "./MenuSubCategory";
 import { Card } from "react-bootstrap";
 
 const MenuDetails = props => {
-  const { menu, auth } = props;
+  const { menu, auth, profile, addMenuItemToCart } = props;
   if (!auth.uid) return <Redirect to="/signin" />;
+
   if (menu) {
     return (
       <div className="container">
@@ -30,6 +33,10 @@ const MenuDetails = props => {
                     key={i}
                     heading={section.heading}
                     menuItems={section.menuItems}
+                    profile={profile}
+                    onMenuItemAdd={m => {
+                      addMenuItemToCart(m);
+                    }}
                   />
                 );
               })}
@@ -66,18 +73,29 @@ const mapStateToProps = (state, ownProps) => {
   if (ownProps.match && ownProps.match.params && ownProps.match.params.id) {
     id = ownProps.match.params.id;
   }
-  console.log(ownProps.match.params);
+
   if (menus) {
     if (id) menu = menus.filter(m => m.id === id)[0];
     else menu = menus.filter(m => m.active)[0];
   }
   return {
     menu: menu,
-    auth: state.firebase.auth
+    auth: state.firebase.auth,
+    profile: state.firebase.profile
   };
 };
 
+const mapDispatchToProps = dispatch => {
+  return {
+    addMenuItemToCart: menuItem => {
+      dispatch(addMenuItemToCart(menuItem));
+    }
+  };
+};
 export default compose(
-  connect(mapStateToProps),
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  ),
   firestoreConnect([{ collection: "menu", orderBy: ["title", "desc"] }])
 )(MenuDetails);

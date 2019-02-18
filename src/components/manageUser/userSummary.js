@@ -1,11 +1,11 @@
 import React from "react";
 import { connect } from "react-redux";
 import { removeUser } from "../../store/actions/authActions";
-
 import { Link } from "react-router-dom";
 import { Card } from "react-bootstrap";
+import ActionControls from "../common/ActionControls";
 
-const UserSummary = ({ user, userTypes, removeUser }) => {
+const UserSummary = ({ user, userTypes, removeUser, currentUserId }) => {
   const userType =
     userTypes && userTypes.filter(type => user.type === type.value)[0];
 
@@ -21,20 +21,37 @@ const UserSummary = ({ user, userTypes, removeUser }) => {
     }
   }
 
+  const actions = [ActionControls.Types.EDIT, ActionControls.Types.REMOVE];
+
   return (
     <Card className="shadow-sm my-4">
       <Card.Body>
+        <ActionControls
+          data={user}
+          actions={actions}
+          onAction={(type, index) => {
+            switch (type) {
+              case ActionControls.Types.EDIT:
+                //this.editCategory(index);
+                break;
+              case ActionControls.Types.REMOVE:
+                removeUser(user);
+                break;
+              default:
+            }
+          }}
+        />
         <span className="card-title ">
           <Link to={"/user/" + user.id} key={user.id}>
             {user.firstName} {user.lastName}
+            {currentUserId === user.id ? (
+              <strong className="badge badge-warning mx-1">YOU</strong>
+            ) : null}
           </Link>
         </span>
-        <span className={`${userBadge} mx-2`}>
-          {userType && userType.title}
-        </span>
-        <button className="btn btn-danger" onClick={removeUser}>
-          Delete
-        </button>
+        <div className="my-2">
+          <span className={`${userBadge}`}>{userType && userType.title}</span>
+        </div>
       </Card.Body>
     </Card>
   );

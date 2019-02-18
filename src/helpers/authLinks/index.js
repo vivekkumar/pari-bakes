@@ -1,9 +1,18 @@
 const allLinks = {
-  manageuUsers: { title: "Manage Users", url: "/manageusers" },
-  dashboard: { title: "Dashboard", url: "/" },
-  manageMenus: { title: "Manage Menus", url: "/menus" },
-  manageOrders: { title: "Manage Orders", url: "/orders" },
-  manageCart: { title: "Cart", url: "/cart" }
+  manageuUsers: {
+    title: "Manage Users",
+    url: "/manageusers",
+    id: "manageuser"
+  },
+  dashboard: { title: "Dashboard", url: "/", id: "dashboard" },
+  manageMenus: { title: "Manage Menus", url: "/menus", id: "managemenu" },
+  manageOrders: { title: "Manage Orders", url: "/orders", id: "orders" },
+  manageCart: { title: "Cart", url: "/cart", id: "cart" },
+  tractYourOrders: {
+    title: "Your Orders",
+    url: "/your-orders",
+    id: "your-orders"
+  }
 };
 
 const singnedLinks = [
@@ -19,7 +28,7 @@ const singnedLinks = [
     links: [allLinks.dashboard, allLinks.manageMenus, allLinks.manageOrders]
   },
   {
-    links: [allLinks.manageCart]
+    links: [allLinks.manageCart, allLinks.tractYourOrders]
   }
 ];
 

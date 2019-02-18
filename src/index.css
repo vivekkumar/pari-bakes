@@ -6,14 +6,17 @@ body {
   margin: 0;
   padding: 0;
   font-family: sans-serif;
-  /* background: url(/img/bg.jpg) no-repeat; */
-  background-size: 100%;
-  background-position: bottom;
-  /* background-color: rgb(41, 19, 19); */
+  background: url(/img/bg_1.jpg);
+  background-position: top;
+  background-blend-mode: darken;
+  /* background-color: rgb(223, 216, 176); */
   min-height: 100%;
 }
 
 /* Header */
+.header .brand-logo img {
+  width: 30px;
+}
 .header .nav-item a {
   padding: 1em;
   text-decoration: none;
@@ -22,4 +25,12 @@ body {
 
 .header .nav-item a:hover {
   background: #ccc;
+}
+
+.content {
+  background: none;
+}
+
+.card {
+  background: rgba(255, 255, 255, 0.9);
 }

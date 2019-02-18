@@ -4,7 +4,7 @@ import Notifications from "./Notifications";
 import { connect } from "react-redux";
 import { firestoreConnect } from "react-redux-firebase";
 import { compose } from "redux";
-import { Redirect, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { deleteMenu, activateMenu } from "../../store/actions/menuActions";
 import { Row, Col } from "react-bootstrap";
 
@@ -18,8 +18,7 @@ class AdminDashboard extends Component {
   };
 
   render() {
-    const { menus, menuItems, auth, notifications } = this.props;
-    if (!auth.uid) return <Redirect to="/signin" />;
+    const { menus, menuItems, notifications } = this.props;
 
     return (
       <div className="dashboard container">
@@ -51,7 +50,6 @@ class AdminDashboard extends Component {
 const mapStateToProps = state => {
   return {
     menus: state.firestore.ordered.menu,
-    auth: state.firebase.auth,
     notifications: state.firestore.ordered.notifications
   };
 };

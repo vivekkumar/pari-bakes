@@ -65,7 +65,11 @@ class ManageUsers extends Component {
                 onChange={this.handleChange}
               />
             </div>
-            <UserList users={filteredUsers} userTypes={userTypes} />
+            <UserList
+              users={filteredUsers}
+              userTypes={userTypes}
+              currentUserId={auth.uid}
+            />
           </Col>
         </Row>
       </div>

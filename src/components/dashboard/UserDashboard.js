@@ -4,20 +4,11 @@ import { firestoreConnect } from "react-redux-firebase";
 import { compose } from "redux";
 import { Redirect } from "react-router-dom";
 
-import { Row, Col } from "react-bootstrap";
-
 class UserDashboard extends Component {
   render() {
-    const { menu, auth } = this.props;
-    if (!auth.uid) return <Redirect to="/signin" />;
+    const { menu } = this.props;
 
-    return (
-      <div className="dashboard container">
-        <Row>
-          <Col sm={12}>{menu && <Redirect to={`/menu/${menu.id}`} />}</Col>
-        </Row>
-      </div>
-    );
+    return (menu && <Redirect to={`/menu/${menu.id}`} />) || null;
   }
 }
 

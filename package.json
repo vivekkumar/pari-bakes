@@ -1,11 +1,12 @@
 {
-  "name": "deepra",
+  "name": "pari-bakes",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
     "bootstrap": "^4.2.1",
     "firebase": "^5.3.0",
-    "firebase-tools": "^6.3.0",
+    "firebase-admin": "^7.0.0",
+    "firebase-tools": "^6.3.1",
     "moment": "^2.22.2",
     "react": "^16.4.1",
     "react-bootstrap": "^1.0.0-beta.5",

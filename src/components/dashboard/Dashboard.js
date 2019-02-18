@@ -14,11 +14,11 @@ class Dashboard extends Component {
     if (profile.isLoaded) {
       switch (profile.type) {
         case 0:
-          return <SuperAdminDashboard />;
+          return <SuperAdminDashboard auth={auth} profile={profile} />;
         case 1:
-          return <AdminDashboard />;
+          return <AdminDashboard auth={auth} profile={profile} />;
         case 2:
-          return <UserDashboard />;
+          return <UserDashboard auth={auth} profile={profile} />;
         default:
           return null;
       }
