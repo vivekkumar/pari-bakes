@@ -23,6 +23,19 @@ exports.projectCreated = functions.firestore
     return createNotification(notification);
   });
 
+exports.newOrder = functions.firestore
+  .document("orders/{orderId}")
+  .onCreate(doc => {
+    const order = doc.data();
+    const notification = {
+      content: "New Order Placed",
+      user: `${order.profile.firstName}`,
+      time: admin.firestore.FieldValue.serverTimestamp()
+    };
+
+    return createNotification(notification);
+  });
+
 exports.userJoined = functions.auth.user().onCreate(user => {
   return admin
     .firestore()

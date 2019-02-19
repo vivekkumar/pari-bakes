@@ -34,3 +34,10 @@ body {
 .card {
   background: rgba(255, 255, 255, 0.9);
 }
+
+/* Notifications */
+.notifications {
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+}

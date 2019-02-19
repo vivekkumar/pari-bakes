@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import MenuList from "../menu/MenuList";
-import Notifications from "./Notifications";
 import { connect } from "react-redux";
 import { firestoreConnect } from "react-redux-firebase";
 import { compose } from "redux";
@@ -19,12 +18,12 @@ class SuperAdminDashboard extends Component {
   };
 
   render() {
-    const { menus, notifications } = this.props;
+    const { menus } = this.props;
 
     return (
       <div className="dashboard container">
         <Row>
-          <Col sm={6}>
+          <Col sm={12}>
             <h1 className="display-4">
               Menus
               <Link to="/createmenu" className="ml-4 text-success">
@@ -36,10 +35,6 @@ class SuperAdminDashboard extends Component {
               onActivate={this.onActivate}
               onDelete={this.onDelete}
             />
-          </Col>
-
-          <Col sm={{ span: 4, offset: 2 }}>
-            <Notifications notifications={notifications} />
           </Col>
         </Row>
       </div>

@@ -1,7 +1,12 @@
 import React, { Component } from "react";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
+import { connect } from "react-redux";
+import { firestoreConnect } from "react-redux-firebase";
+import { compose } from "redux";
+
 import Header from "./components/layout/Header";
 import Dashboard from "./components/dashboard/Dashboard";
+import Notifications from "./components/dashboard/Notifications";
 import ManageMenu from "./components/menu/ManageMenu";
 import MenuDetails from "./components/menu/MenuDetails";
 import SignIn from "./components/auth/SignIn";
@@ -16,6 +21,7 @@ import UserDetails from "./components/manageUser/userDetail";
 
 class App extends Component {
   render() {
+    const { notifications } = this.props;
     return (
       <BrowserRouter>
         <div className="App pb-4">
@@ -38,10 +44,22 @@ class App extends Component {
               <Route path="/user/:id" component={UserDetails} />
             </Switch>
           </div>
+          <Notifications notifications={notifications} />
         </div>
       </BrowserRouter>
     );
   }
 }
 
-export default App;
+const mapStateToProps = state => {
+  return {
+    notifications: state.firestore.ordered.notifications
+  };
+};
+
+export default compose(
+  connect(mapStateToProps),
+  firestoreConnect([
+    { collection: "notifications", limit: 3, orderBy: ["time", "desc"] }
+  ])
+)(App);

@@ -1,8 +1,7 @@
 import React, { Component } from "react";
+import { Modal, Row, Col } from "react-bootstrap";
 
-import { formatePrice } from "../../helpers/utils";
-
-import { Modal, Table, Row, Col } from "react-bootstrap";
+import OrderItemsList from "./orderItemsList";
 
 class ConfrimOrder extends Component {
   constructor(props) {
@@ -30,7 +29,6 @@ class ConfrimOrder extends Component {
   render() {
     const { show, groupedItems } = this.state;
     const { onOrderPlace } = this.props;
-    let total = 0;
 
     return (
       <Modal
@@ -46,38 +44,7 @@ class ConfrimOrder extends Component {
         <Modal.Body>
           <Row>
             <Col sm={12}>
-              <Table responsive>
-                <thead>
-                  <tr>
-                    <th>Name</th>
-                    <th>Price</th>
-                    <th className="text-right">Qnty.</th>
-                    <th className="text-right">Total</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {groupedItems &&
-                    groupedItems.map(({ item, count }, index) => {
-                      total += parseInt(item.price, 10) * count;
-                      return (
-                        <tr key={item.id}>
-                          <td>{item.title}</td>
-                          <td>{formatePrice(item.price)}</td>
-                          <td className="text-right">{count}</td>
-                          <td className="text-right">
-                            {formatePrice(item.price * count)}
-                          </td>
-                        </tr>
-                      );
-                    })}
-                  <tr className="h4">
-                    <td>Total</td>
-                    <td />
-                    <td />
-                    <td className="text-right">{formatePrice(total)}</td>
-                  </tr>
-                </tbody>
-              </Table>
+              <OrderItemsList groupedItems={groupedItems} />
             </Col>
           </Row>
         </Modal.Body>

@@ -12,6 +12,11 @@ const allLinks = {
     title: "Your Orders",
     url: "/your-orders",
     id: "your-orders"
+  },
+  todayMenu: {
+    title: "Today's Menu",
+    url: "/",
+    id: "today-menu"
   }
 };
 
@@ -28,7 +33,7 @@ const singnedLinks = [
     links: [allLinks.dashboard, allLinks.manageMenus, allLinks.manageOrders]
   },
   {
-    links: [allLinks.manageCart, allLinks.tractYourOrders]
+    links: [allLinks.todayMenu, allLinks.manageCart, allLinks.tractYourOrders]
   }
 ];
 

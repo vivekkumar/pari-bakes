@@ -15,7 +15,7 @@ import OrderList from "./ordersList";
 
 class ManageOrders extends Component {
   render() {
-    const { auth, orders, orderStatus } = this.props;
+    const { auth, orders } = this.props;
     if (!auth.uid) return <Redirect to="/signin" />;
 
     return (
@@ -26,53 +26,35 @@ class ManageOrders extends Component {
           </Col>
         </Row>
         <Row>
-          <Col sm={2}>
+          <Col sm={3}>
             <h3>Open</h3>
-            <OrderList
-              orders={orders}
-              orderStatus={orderStatus}
-              statusType={"open"}
-            />
+            <OrderList orders={orders} statusType={"open"} />
           </Col>
-          <Col sm={2}>
+          {/* <Col sm={2}>
             <h3>Accepted</h3>
             <OrderList
               orders={orders}
-              orderStatus={orderStatus}
               statusType={"accepted"}
             />
-          </Col>
-          <Col sm={2}>
+          </Col> */}
+          <Col sm={3}>
             <h3>Processing</h3>
-            <OrderList
-              orders={orders}
-              orderStatus={orderStatus}
-              statusType={"processing"}
-            />
+            <OrderList orders={orders} statusType={"processing"} />
           </Col>
-          <Col sm={2}>
+          {/* <Col sm={3}>
             <h3>Out for delievery</h3>
             <OrderList
               orders={orders}
-              orderStatus={orderStatus}
               statusType={"outForDelievery"}
             />
-          </Col>
-          <Col sm={2}>
+          </Col> */}
+          <Col sm={3}>
             <h3>Delivered</h3>
-            <OrderList
-              orders={orders}
-              orderStatus={orderStatus}
-              statusType={"delivered"}
-            />
+            <OrderList orders={orders} statusType={"delivered"} />
           </Col>
-          <Col sm={2}>
-            <h3>Payment Completed</h3>
-            <OrderList
-              orders={orders}
-              orderStatus={orderStatus}
-              statusType={"paymentDone"}
-            />
+          <Col sm={3}>
+            <h3>Payment Done</h3>
+            <OrderList orders={orders} statusType={"paymentDone"} />
           </Col>
         </Row>
       </div>
@@ -83,13 +65,9 @@ class ManageOrders extends Component {
 const mapStateToProps = state => {
   const allOrders = state.firestore.ordered.orders;
   const orders = allOrders || [];
-  const orderStatus =
-    state.firestore.data.orderStatus &&
-    state.firestore.data.orderStatus["L23hEiqI8sghIiTcpENy"];
 
   return {
     orders,
-    orderStatus,
     auth: state.firebase.auth
   };
 };
@@ -106,8 +84,5 @@ export default compose(
     mapStateToProps,
     mapDispatchToProps
   ),
-  firestoreConnect([
-    { collection: "orders", orderBy: ["createdOn", "desc"] },
-    { collection: "orderStatus", doc: "L23hEiqI8sghIiTcpENy" }
-  ])
+  firestoreConnect([{ collection: "orders", orderBy: ["createdOn", "desc"] }])
 )(ManageOrders);

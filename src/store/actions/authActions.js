@@ -36,13 +36,31 @@ export const signUp = newUser => {
       .auth()
       .createUserWithEmailAndPassword(newUser.email, newUser.password)
       .then(resp => {
+        const {
+          firstName,
+          lastName,
+          phone,
+          block,
+          floor,
+          flatNumber
+        } = newUser;
         return firestore
           .collection("users")
           .doc(resp.user.uid)
           .set({
-            firstName: newUser.firstName,
-            lastName: newUser.lastName,
+            firstName,
+            lastName,
             initials: newUser.firstName[0] + newUser.lastName[0],
+            address: {
+              phone,
+              block,
+              floor,
+              flatNumber,
+              addressLine1: "Sankalp Cherry Blossom",
+              addressLine2: "Varthur",
+              city: "Bangalore",
+              pin: "560087"
+            },
             type: 2
           });
       })

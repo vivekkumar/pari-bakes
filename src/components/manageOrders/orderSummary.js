@@ -3,6 +3,10 @@ import { Card } from "react-bootstrap";
 import moment from "moment";
 import { formatePrice } from "../../helpers/utils";
 
+import OrderActions from "./orderActions";
+
+import OrderItemsList from "./orderItemsList";
+
 class OrderSummary extends React.Component {
   constructor(props) {
     super(props);
@@ -19,54 +23,48 @@ class OrderSummary extends React.Component {
   };
 
   render() {
-    const { order, orderStatus, onCancel, onDelete } = this.props;
+    const { order } = this.props;
     const { items, status, createdOn } = order;
     const { expanded } = this.state;
-    const oStatus = orderStatus ? orderStatus[status] : {};
+    const { address } = order.profile;
 
     return (
-      <Card key={order.id} className={`mb-4 shadow-sm order-summary ${status}`}>
+      <Card key={order.id} className={`mb-4 shadow-lg order-summary ${status}`}>
         <Card.Body>
-          <div className="float-right text-right">
-            <span className="badge badge-primary">Status: {status}</span>
-            <div>{oStatus.message}</div>
+          <div className="text-center">
+            <small>
+              Placed by{" "}
+              <strong>
+                <em>
+                  {order.profile.firstName}{" "}
+                  <span className="badge badge-primary">
+                    {address
+                      ? `${address.block}-${address.floor}${address.flatNumber}`
+                      : `X-XXX`}
+                  </span>
+                </em>
+              </strong>{" "}
+              {moment(createdOn.toDate()).fromNow()}
+            </small>
+            <div className="display-4 my-2">
+              <i className="fas fa-rupee-sign text-success" />
+              {formatePrice(order.total)}
+            </div>
+            {expanded ? (
+              <button onClick={this.toggleExpand} className="btn btn-sm">
+                <i className="fas fa-caret-down" /> Hide
+              </button>
+            ) : (
+              <button onClick={this.toggleExpand} className="btn btn-sm">
+                <i className="fas fa-caret-up" /> Show
+              </button>
+            )}
           </div>
-          <h3>
-            <i className="fas fa-rupee-sign text-success" />
-            {formatePrice(order.total)}
-            <small>({moment(createdOn.toDate()).fromNow()})</small>
-          </h3>
-
-          <button onClick={this.toggleExpand}>
-            {expanded ? "Close" : "Open"}
-          </button>
 
           <div style={{ height: expanded ? "auto" : 0, overflow: "hidden" }}>
-            {items &&
-              items.map(item => {
-                return (
-                  <div key={item.item.id}>
-                    {item.item.title} {item.count}
-                  </div>
-                );
-              })}
+            <OrderItemsList groupedItems={items} />
           </div>
-
-          <div className="mt-3">
-            <button
-              className="btn btn-info btn-sm mr-2"
-              onClick={() => onCancel(order)}
-            >
-              Cancel Order
-            </button>
-            <button
-              className="btn btn-danger btn-sm"
-              onClick={() => onDelete(order)}
-            >
-              Delete Order
-            </button>
-            <em className="float-right">-{order.profile.firstName}</em>
-          </div>
+          <OrderActions order={order} />
         </Card.Body>
       </Card>
     );

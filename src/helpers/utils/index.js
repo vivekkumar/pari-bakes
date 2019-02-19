@@ -1,3 +1,3 @@
 export const formatePrice = p => {
-  return parseInt(p, 10).toFixed(1) + "/-";
+  return parseInt(p, 10) + "/-";
 };

@@ -123,7 +123,6 @@ export const placeOrder = items => {
 };
 
 export const changeOrderStatus = (order, newStatus) => {
-  console.log("CancelOrderAction", order);
   return (dispatch, getState, { getFirestore }) => {
     const firestore = getFirestore();
 
@@ -143,7 +142,6 @@ export const changeOrderStatus = (order, newStatus) => {
 };
 
 export const deleteOrder = order => {
-  console.log("CancelOrderAction", order);
   return (dispatch, getState, { getFirestore }) => {
     const firestore = getFirestore();
 
