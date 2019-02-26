@@ -24,7 +24,7 @@ const UserSummary = ({ user, userTypes, removeUser, currentUserId }) => {
   const actions = [ActionControls.Types.EDIT, ActionControls.Types.REMOVE];
 
   return (
-    <Card className="shadow-sm my-4">
+    <Card className="shadow-sm my-2">
       <Card.Body>
         <ActionControls
           data={user}

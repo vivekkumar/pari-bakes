@@ -30,22 +30,22 @@ class OrderActions extends React.Component {
     if (order.status === "paymentDone" || profile.type >= 2) return null;
 
     return (
-      <div className="mt-3">
+      <div className="mt-1">
         <button
-          className="btn btn-info btn-sm"
+          className="btn btn-sm  float-right"
           onClick={() => {
             changeOrderStatusAction(order, nextStatus.nextStatus);
           }}
         >
-          {nextStatus.label}
+          {nextStatus.label} <i className="fas fa-arrow-right" />
         </button>
         <button
-          className="btn btn-sm btn-danger float-right"
+          className="btn btn-sm btn-danger"
           onClick={() => {
             deleteOrderAction(order);
           }}
         >
-          Discard Order
+          Delete Order
         </button>
       </div>
     );

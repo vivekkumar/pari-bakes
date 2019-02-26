@@ -87,6 +87,11 @@ class CreateMenuItem extends Component {
               </Form.Group>
 
               <Form.Group>
+                <Form.Label>Photo</Form.Label>
+                <input type="file" onChange={this.handleChange} />
+              </Form.Group>
+
+              <Form.Group>
                 <button className="btn btn-success">Create</button>
               </Form.Group>
             </Form>

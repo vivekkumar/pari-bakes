@@ -22,7 +22,8 @@ class Header extends React.Component {
           expand="md"
           bg="light"
           variant="light"
-          className="mb-5"
+          className="mb-5 shadow-sm"
+          fixed="top"
         >
           <Navbar.Brand>
             <Link to="/" className="brand-logo">

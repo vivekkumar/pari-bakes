@@ -50,17 +50,17 @@ class ManageMenu extends Component {
     return (
       <div className="container">
         <Row>
-          <Col sm={12}>
+          <Col sm={{ span: 8, offset: 2 }}>
             <div className="display-4">
               Menu Items
               <Link to="/createmnenuitem" className="ml-4 text-success">
                 <i className="fas fa-plus-circle" />
               </Link>
             </div>
-            <div className="display-4 my-4">
+            <div className="my-4">
               <input
                 type="text"
-                className="p-2 border border-warning rounded"
+                className="p-2 border border-warning rounded w-100"
                 placeholder="Search menu items..."
                 onChange={this.handleChange}
               />

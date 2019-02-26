@@ -14,6 +14,9 @@ body {
 }
 
 /* Header */
+.header {
+  margin-bottom: 5em;
+}
 .header .brand-logo img {
   width: 30px;
 }
@@ -40,4 +43,15 @@ body {
   position: fixed;
   bottom: 1rem;
   right: 1rem;
+}
+
+.notifications > div {
+  transition: all 1s;
+  opacity: 0;
+  height: 0;
+}
+
+.notifications > div.expanded {
+  opacity: 1;
+  height: auto;
 }

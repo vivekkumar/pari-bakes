@@ -5,11 +5,6 @@ import { firestoreConnect } from "react-redux-firebase";
 import { compose } from "redux";
 import { Redirect } from "react-router-dom";
 
-import {
-  changeOrderStatus,
-  deleteOrder
-} from "../../store/actions/cartActions";
-
 import { Row, Col } from "react-bootstrap";
 import OrderList from "./ordersList";
 
@@ -27,34 +22,29 @@ class ManageOrders extends Component {
         </Row>
         <Row>
           <Col sm={3}>
-            <h3>Open</h3>
-            <OrderList orders={orders} statusType={"open"} />
+            <OrderList title={"Opened"} orders={orders} statusType={"open"} />
           </Col>
-          {/* <Col sm={2}>
-            <h3>Accepted</h3>
+          <Col sm={3}>
             <OrderList
+              title={"Processing"}
               orders={orders}
-              statusType={"accepted"}
+              statusType={"processing"}
             />
-          </Col> */}
-          <Col sm={3}>
-            <h3>Processing</h3>
-            <OrderList orders={orders} statusType={"processing"} />
           </Col>
-          {/* <Col sm={3}>
-            <h3>Out for delievery</h3>
+          <Col sm={3}>
             <OrderList
+              title={"Delivered"}
               orders={orders}
-              statusType={"outForDelievery"}
+              statusType={"delivered"}
             />
-          </Col> */}
-          <Col sm={3}>
-            <h3>Delivered</h3>
-            <OrderList orders={orders} statusType={"delivered"} />
           </Col>
           <Col sm={3}>
-            <h3>Payment Done</h3>
-            <OrderList orders={orders} statusType={"paymentDone"} />
+            <OrderList
+              title={"Payment Done"}
+              orders={orders}
+              statusType={"paymentDone"}
+              showTotalPrice={true}
+            />
           </Col>
         </Row>
       </div>
@@ -63,26 +53,13 @@ class ManageOrders extends Component {
 }
 
 const mapStateToProps = state => {
-  const allOrders = state.firestore.ordered.orders;
-  const orders = allOrders || [];
-
   return {
-    orders,
+    orders: state.firestore.ordered.orders || [],
     auth: state.firebase.auth
   };
 };
 
-const mapDispatchToProps = dispatch => {
-  return {
-    cancelOrderAction: o => dispatch(changeOrderStatus(o, "cancelled")),
-    deleteOrderAction: o => dispatch(deleteOrder(o))
-  };
-};
-
 export default compose(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  ),
+  connect(mapStateToProps),
   firestoreConnect([{ collection: "orders", orderBy: ["createdOn", "desc"] }])
 )(ManageOrders);

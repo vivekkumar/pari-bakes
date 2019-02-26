@@ -1,5 +1,7 @@
 import { MenuActionTypes } from "./types";
 
+const MenuItemPhotosPath = "menuItemPhotos";
+
 export const createMenu = menu => {
   return (dispatch, getState, { getFirestore }) => {
     const firestore = getFirestore();
@@ -25,10 +27,23 @@ export const createMenu = menu => {
 };
 
 export const createMenuItem = menuItem => {
-  return (dispatch, getState, { getFirestore }) => {
+  return (dispatch, getState, { getFirestore, getFirebase }) => {
     const firestore = getFirestore();
+    // const firebase = getFirebase();
+    //const uploadFile = firebase.uploadFile;
     const profile = getState().firebase.profile;
     const authorId = getState().firebase.auth.uid;
+    //const file = menuItem.files;
+    //debugger;
+
+    // uploadFile(MenuItemPhotosPath, file, MenuItemPhotosPath)
+    //   .then(r => {
+    //     console.log("upload completed");
+    //   })
+    //   .catch(e => {
+    //     console.error(e);
+    //   });
+
     firestore
       .collection("menuItems")
       .add({

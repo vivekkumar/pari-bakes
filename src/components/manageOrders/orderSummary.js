@@ -22,11 +22,18 @@ class OrderSummary extends React.Component {
     });
   };
 
+  getOrderNumber = () => {
+    const { order } = this.props;
+    const { createdOn } = order;
+    const createdOnDate = createdOn.toDate();
+    return `#${createdOnDate.getHours() * 10 + createdOnDate.getMinutes()} `;
+  };
+
   render() {
     const { order } = this.props;
-    const { items, status, createdOn } = order;
+    const { items, status, createdOn, profile } = order;
     const { expanded } = this.state;
-    const { address } = order.profile;
+    const { address } = profile;
 
     return (
       <Card key={order.id} className={`mb-4 shadow-lg order-summary ${status}`}>
@@ -44,21 +51,20 @@ class OrderSummary extends React.Component {
                   </span>
                 </em>
               </strong>{" "}
-              {moment(createdOn.toDate()).fromNow()}
-            </small>
-            <div className="display-4 my-2">
+              {moment(createdOn.toDate()).fromNow()} of{" "}
               <i className="fas fa-rupee-sign text-success" />
               {formatePrice(order.total)}
+            </small>
+
+            <div className="my-2">
+              <strong>{this.getOrderNumber()}</strong>
+              <button onClick={this.toggleExpand} className="btn btn-sm">
+                <i
+                  className={expanded ? "fas fa-caret-up" : "fas fa-caret-down"}
+                />
+                {expanded ? " Hide" : " Show"}
+              </button>
             </div>
-            {expanded ? (
-              <button onClick={this.toggleExpand} className="btn btn-sm">
-                <i className="fas fa-caret-down" /> Hide
-              </button>
-            ) : (
-              <button onClick={this.toggleExpand} className="btn btn-sm">
-                <i className="fas fa-caret-up" /> Show
-              </button>
-            )}
           </div>
 
           <div style={{ height: expanded ? "auto" : 0, overflow: "hidden" }}>

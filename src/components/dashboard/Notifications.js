@@ -23,7 +23,7 @@ class Notifications extends Component {
 
     return (
       <div className="section notifications">
-        <div style={{ height: expanded ? "auto" : 0, overflow: "hidden" }}>
+        <div className={expanded ? "expanded" : ""}>
           {notifications &&
             notifications.map(item => {
               return (
