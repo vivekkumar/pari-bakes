@@ -4,23 +4,33 @@ import { Card } from "react-bootstrap";
 
 class MenuItemDetail extends Component {
   render() {
-    const { menuItem } = this.props;
+    const { menuItem, onAction } = this.props;
     return (
       <Card className="mb-2 shadow-sm">
         <Card.Body>
+          <div className="float-right">
+            <button
+              className="btn btn-sm btn-danger"
+              onClick={() => onAction(menuItem)}
+            >
+              <i className="fas fa-times" />
+            </button>
+          </div>
           <img
-            src={
-              "https://img.bestrecipes.com.au/RCK3slSo/h300-w400-cscale/br-api/asset/20771/super-easy-pizza-dough-recipe.jpg"
-            }
+            src={menuItem.imageUrl || "/img/default.png"}
             alt={menuItem.title}
             className="float-left mr-3 rounded img-thumbnail"
-            style={{ width: 100 }}
+            style={{ width: 100, height: 100 }}
           />
           <div>
-            <strong>{menuItem.title}</strong>
+            <div>
+              <strong>{menuItem.title}</strong>
+            </div>
+            <div>
+              <small>{menuItem.description}</small>
+            </div>
+            <div>{formatePrice(menuItem.price)}</div>
           </div>
-          <small>{menuItem.description}</small>
-          <div>{formatePrice(menuItem.price)}</div>
         </Card.Body>
       </Card>
     );

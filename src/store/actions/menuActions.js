@@ -1,3 +1,4 @@
+import firebase from "firebase";
 import { MenuActionTypes } from "./types";
 
 const MenuItemPhotosPath = "menuItemPhotos";
@@ -29,36 +30,56 @@ export const createMenu = menu => {
 export const createMenuItem = menuItem => {
   return (dispatch, getState, { getFirestore, getFirebase }) => {
     const firestore = getFirestore();
-    // const firebase = getFirebase();
-    //const uploadFile = firebase.uploadFile;
+    const firebase = getFirebase();
     const profile = getState().firebase.profile;
     const authorId = getState().firebase.auth.uid;
-    //const file = menuItem.files;
-    //debugger;
+    const { title, description, price, halfPrice, servings, file } = menuItem;
+    const createdAt = new Date();
+    const fileName = `${MenuItemPhotosPath}/title-${createdAt.getTime()}`;
 
-    // uploadFile(MenuItemPhotosPath, file, MenuItemPhotosPath)
-    //   .then(r => {
-    //     console.log("upload completed");
-    //   })
-    //   .catch(e => {
-    //     console.error(e);
-    //   });
+    const saveMenuItem = imageUrl => {
+      debugger;
+      firestore
+        .collection("menuItems")
+        .add({
+          title,
+          description,
+          price,
+          halfPrice,
+          servings,
+          imageUrl,
+          authorFirstName: profile.firstName,
+          authorLastName: profile.lastName,
+          authorId: authorId,
+          createdAt
+        })
+        .then(() => {
+          dispatch({
+            type: MenuActionTypes.CREATE_MENU_ITEM_SUCCESS,
+            menuItem
+          });
+        })
+        .catch(err => {
+          dispatch({ type: MenuActionTypes.CREATE_MENU_ITEM_ERROR }, err);
+        });
+    };
 
-    firestore
-      .collection("menuItems")
-      .add({
-        ...menuItem,
-        authorFirstName: profile.firstName,
-        authorLastName: profile.lastName,
-        authorId: authorId,
-        createdAt: new Date()
-      })
-      .then(() => {
-        dispatch({ type: MenuActionTypes.CREATE_MENU_ITEM_SUCCESS, menuItem });
-      })
-      .catch(err => {
-        dispatch({ type: MenuActionTypes.CREATE_MENU_ITEM_ERROR }, err);
-      });
+    if (file) {
+      firebase
+        .storage()
+        .ref(fileName)
+        .put(file)
+        .then(ss => {
+          firebase
+            .storage()
+            .ref(fileName)
+            .getDownloadURL()
+            .then(url => saveMenuItem(url));
+        })
+        .catch(e => saveMenuItem());
+    } else {
+      saveMenuItem();
+    }
   };
 };
 
@@ -71,6 +92,22 @@ export const deleteMenu = menu => {
       .delete()
       .then(() => {
         dispatch({ type: MenuActionTypes.DELETE_MENU_SUCCESS, menu });
+      })
+      .catch(err => {
+        dispatch({ type: MenuActionTypes.DELETE_MENU_ERROR }, err);
+      });
+  };
+};
+
+export const deleteMenuItem = menuItem => {
+  return (dispatch, getState, { getFirestore }) => {
+    const firestore = getFirestore();
+    firestore
+      .collection("menuItems")
+      .doc(menuItem.id)
+      .delete()
+      .then(() => {
+        dispatch({ type: MenuActionTypes.DELETE_MENU_SUCCESS, menuItem });
       })
       .catch(err => {
         dispatch({ type: MenuActionTypes.DELETE_MENU_ERROR }, err);

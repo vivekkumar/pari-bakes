@@ -11,18 +11,26 @@ class CreateMenuItem extends Component {
     description: "",
     price: 0,
     halfPrice: 0,
-    servings: 1
+    servings: 1,
+    file: null
   };
   handleChange = e => {
-    this.setState({
-      [e.target.id]: e.target.value
-    });
+    if (e.target.type === "file") {
+      this.setState({
+        [e.target.id]: e.target.files[0]
+      });
+    } else {
+      this.setState({
+        [e.target.id]: e.target.value
+      });
+    }
   };
   handleSubmit = e => {
     e.preventDefault();
     this.props.createMenuItem(this.state);
     this.props.history.push("/menus");
   };
+
   render() {
     const { auth } = this.props;
     if (!auth.uid) return <Redirect to="/signin" />;
@@ -88,7 +96,7 @@ class CreateMenuItem extends Component {
 
               <Form.Group>
                 <Form.Label>Photo</Form.Label>
-                <input type="file" onChange={this.handleChange} />
+                <input type="file" id="file" onChange={this.handleChange} />
               </Form.Group>
 
               <Form.Group>

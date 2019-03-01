@@ -4,6 +4,8 @@ import { firestoreConnect } from "react-redux-firebase";
 import { compose } from "redux";
 import { Redirect, Link } from "react-router-dom";
 
+import { deleteMenuItem } from "../../store/actions/menuActions";
+
 import { Row, Col } from "react-bootstrap";
 import MenuItemList from "./MenuItemList";
 
@@ -43,7 +45,7 @@ class ManageMenu extends Component {
   };
 
   render() {
-    const { auth } = this.props;
+    const { auth, deleteMenuItem } = this.props;
     const { filteredMenuItems } = this.state;
     if (!auth.uid) return <Redirect to="/signin" />;
 
@@ -53,7 +55,10 @@ class ManageMenu extends Component {
           <Col sm={{ span: 8, offset: 2 }}>
             <div className="display-4">
               Menu Items
-              <Link to="/createmnenuitem" className="ml-4 text-success">
+              <Link
+                to="/createmnenuitem"
+                className="ml-4 text-success float-right"
+              >
                 <i className="fas fa-plus-circle" />
               </Link>
             </div>
@@ -65,7 +70,10 @@ class ManageMenu extends Component {
                 onChange={this.handleChange}
               />
             </div>
-            <MenuItemList menuItems={filteredMenuItems} />
+            <MenuItemList
+              menuItems={filteredMenuItems}
+              onAction={deleteMenuItem}
+            />
           </Col>
         </Row>
       </div>
@@ -80,7 +88,20 @@ const mapStateToProps = state => {
   };
 };
 
+const mapDispatchToProps = dispatch => {
+  return {
+    deleteMenuItem: menuItem => {
+      dispatch(deleteMenuItem(menuItem));
+    }
+  };
+};
+
 export default compose(
-  connect(mapStateToProps),
-  firestoreConnect([{ collection: "menuItems", orderBy: ["title", "desc"] }])
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  ),
+  firestoreConnect([
+    { collection: "menuItems", orderBy: ["createdAt", "desc"] }
+  ])
 )(ManageMenu);
