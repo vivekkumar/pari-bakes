@@ -1,6 +1,4 @@
 import React, { Component } from "react";
-import { connect } from "react-redux";
-import { Redirect } from "react-router-dom";
 
 import SuperAdminDashboard from "./SuperAdminDashboard";
 import AdminDashboard from "./AdminDashboard";
@@ -8,17 +6,16 @@ import UserDashboard from "./UserDashboard";
 
 class Dashboard extends Component {
   render() {
-    const { auth, profile } = this.props;
-    if (!auth.uid) return <Redirect to="/signin" />;
+    const { profile } = this.props;
 
     if (profile.isLoaded) {
       switch (profile.type) {
         case 0:
-          return <SuperAdminDashboard auth={auth} profile={profile} />;
+          return <SuperAdminDashboard />;
         case 1:
-          return <AdminDashboard auth={auth} profile={profile} />;
+          return <AdminDashboard />;
         case 2:
-          return <UserDashboard auth={auth} profile={profile} />;
+          return <UserDashboard />;
         default:
           return null;
       }
@@ -28,11 +25,4 @@ class Dashboard extends Component {
   }
 }
 
-const mapStateToProps = state => {
-  return {
-    auth: state.firebase.auth,
-    profile: state.firebase.profile
-  };
-};
-
-export default connect(mapStateToProps)(Dashboard);
+export default Dashboard;

@@ -1,8 +1,5 @@
 import React, { Component } from "react";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
-import { connect } from "react-redux";
-import { firestoreConnect } from "react-redux-firebase";
-import { compose } from "redux";
 
 import Header from "./components/layout/Header";
 import Dashboard from "./components/dashboard/Dashboard";
@@ -18,48 +15,43 @@ import ManageOrders from "./components/manageOrders/manageOrders";
 import TrackYourOrders from "./components/manageOrders/tractYourOrders";
 import ManageCart from "./components/manageCart/manageCart";
 import UserDetails from "./components/manageUser/userDetail";
+import AuthGaurd from "./components/auth/AuthGaurd";
 
 class App extends Component {
   render() {
-    const { notifications } = this.props;
     return (
       <BrowserRouter>
         <div className="App pb-4">
           <Header />
           <div className="content">
             <Switch>
-              <Route exact path="/" component={Dashboard} />
-              <Route path="/orders" component={ManageOrders} />
-              <Route path="/your-orders" component={TrackYourOrders} />
-              <Route path="/cart" component={ManageCart} />
-              <Route path="/menus" component={ManageMenu} />
+              <Route exact path="/" component={AuthGaurd(Dashboard)} />
+              <Route path="/orders" component={AuthGaurd(ManageOrders)} />
+              <Route
+                path="/your-orders"
+                component={AuthGaurd(TrackYourOrders)}
+              />
+              <Route path="/cart" component={AuthGaurd(ManageCart)} />
+              <Route path="/menus" component={AuthGaurd(ManageMenu)} />
               <Route path="/menu" component={MenuDetails} />
               <Route path="/menu/:id" component={MenuDetails} />
               <Route path="/signin" component={SignIn} />
               <Route path="/signup" component={SignUp} />
-              <Route path="/createmenu" component={CreateMenu} />
-              <Route path="/createmenu/:id" component={CreateMenu} />
-              <Route path="/createmnenuitem" component={CreateMenuItem} />
-              <Route path="/manageusers" component={ManageUsers} />
-              <Route path="/user/:id" component={UserDetails} />
+              <Route path="/createmenu" component={AuthGaurd(CreateMenu)} />
+              <Route path="/createmenu/:id" component={AuthGaurd(CreateMenu)} />
+              <Route
+                path="/createmnenuitem"
+                component={AuthGaurd(CreateMenuItem)}
+              />
+              <Route path="/manageusers" component={AuthGaurd(ManageUsers)} />
+              <Route path="/user/:id" component={AuthGaurd(UserDetails)} />
             </Switch>
           </div>
-          <Notifications notifications={notifications} />
+          <Notifications />
         </div>
       </BrowserRouter>
     );
   }
 }
 
-const mapStateToProps = state => {
-  return {
-    notifications: state.firestore.ordered.notifications
-  };
-};
-
-export default compose(
-  connect(mapStateToProps),
-  firestoreConnect([
-    { collection: "notifications", limit: 3, orderBy: ["time", "desc"] }
-  ])
-)(App);
+export default App;

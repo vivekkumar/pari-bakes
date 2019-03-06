@@ -1,5 +1,8 @@
 import React, { Component } from "react";
 import moment from "moment";
+import { connect } from "react-redux";
+import { firestoreConnect } from "react-redux-firebase";
+import { compose } from "redux";
 
 import { Card } from "react-bootstrap";
 
@@ -41,7 +44,7 @@ class Notifications extends Component {
         </div>
 
         <button
-          className="btn btn-success px-3 py-2 shadow-lg rounded-circle float-right"
+          className="btn btn-success px-3 py-2 shadow-lg  float-right"
           onMouseOver={this.toggleExpand}
           onMouseOut={this.toggleExpand}
         >
@@ -52,4 +55,15 @@ class Notifications extends Component {
   }
 }
 
-export default Notifications;
+const mapStateToProps = state => {
+  return {
+    notifications: state.firestore.ordered.notifications
+  };
+};
+
+export default compose(
+  connect(mapStateToProps),
+  firestoreConnect([
+    { collection: "notifications", limit: 3, orderBy: ["time", "desc"] }
+  ])
+)(Notifications);

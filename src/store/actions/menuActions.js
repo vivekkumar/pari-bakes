@@ -38,7 +38,6 @@ export const createMenuItem = menuItem => {
     const fileName = `${MenuItemPhotosPath}/title-${createdAt.getTime()}`;
 
     const saveMenuItem = imageUrl => {
-      debugger;
       firestore
         .collection("menuItems")
         .add({

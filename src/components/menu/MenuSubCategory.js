@@ -6,11 +6,11 @@ class MenuSubCategory extends Component {
     const isNotAdmin = profile && profile.type >= 2;
     return (
       <section>
-        <h2 className="text-center">{heading}</h2>
+        <h2 className="text-center m-4">{heading}</h2>
         {menuItems &&
           menuItems.map(menuItem => {
             return (
-              <blockquote key={menuItem.id}>
+              <blockquote className="clearfix" key={menuItem.id}>
                 {isNotAdmin && (
                   <div>
                     <button
@@ -24,16 +24,24 @@ class MenuSubCategory extends Component {
                   </div>
                 )}
 
+                <img
+                  src={menuItem.imageUrl || "/img/default.png"}
+                  alt={menuItem.title}
+                  className="float-left mr-3 rounded img-thumbnail"
+                  style={{ width: 60, height: 60 }}
+                />
+
                 <div className="float-right mx-1">
                   {menuItem.price}
                   /-
                 </div>
 
                 <h5>{menuItem.title}</h5>
-                <small>
-                  <em>{menuItem.description}</em>
-                </small>
-
+                {!isNotAdmin && (
+                  <small>
+                    <em>{menuItem.description}</em>
+                  </small>
+                )}
                 <hr />
               </blockquote>
             );

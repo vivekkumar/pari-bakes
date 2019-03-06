@@ -17,7 +17,7 @@ class AdminDashboard extends Component {
   };
 
   render() {
-    const { menus, menuItems } = this.props;
+    const { menus } = this.props;
 
     return (
       <div className="dashboard container">
@@ -32,7 +32,6 @@ class AdminDashboard extends Component {
 
             <MenuList
               menus={menus}
-              menuItems={menuItems}
               onDelete={this.onDelete}
               onActivate={this.onActivate}
             />
@@ -60,8 +59,5 @@ export default compose(
     mapStateToProps,
     mapDispatchToProps
   ),
-  firestoreConnect([
-    { collection: "menu", orderBy: ["createdAt", "desc"] },
-    { collection: "menuItems", orderBy: ["title", "desc"] }
-  ])
+  firestoreConnect([{ collection: "menu", orderBy: ["createdAt", "desc"] }])
 )(AdminDashboard);

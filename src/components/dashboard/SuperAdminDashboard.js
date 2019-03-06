@@ -1,24 +1,17 @@
 import React, { Component } from "react";
-import MenuList from "../menu/MenuList";
 import { connect } from "react-redux";
 import { firestoreConnect } from "react-redux-firebase";
 import { compose } from "redux";
-import { Link } from "react-router-dom";
+
 import { deleteMenu, activateMenu } from "../../store/actions/menuActions";
 
+import { Link } from "react-router-dom";
+import MenuList from "../menu/MenuList";
 import { Row, Col } from "react-bootstrap";
 
 class SuperAdminDashboard extends Component {
-  onDelete = menu => {
-    this.props.deleteMenu(menu);
-  };
-
-  onActivate = menu => {
-    this.props.activateMenu(menu);
-  };
-
   render() {
-    const { menus } = this.props;
+    const { menus, deleteMenuDisptach, activateMenuDispatch } = this.props;
 
     return (
       <div className="dashboard container">
@@ -32,8 +25,8 @@ class SuperAdminDashboard extends Component {
             </h1>
             <MenuList
               menus={menus}
-              onActivate={this.onActivate}
-              onDelete={this.onDelete}
+              onActivate={activateMenuDispatch}
+              onDelete={deleteMenuDisptach}
             />
           </Col>
         </Row>
@@ -44,15 +37,14 @@ class SuperAdminDashboard extends Component {
 
 const mapStateToProps = state => {
   return {
-    menus: state.firestore.ordered.menu,
-    notifications: state.firestore.ordered.notifications
+    menus: state.firestore.ordered.menu
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    deleteMenu: menu => dispatch(deleteMenu(menu)),
-    activateMenu: menu => dispatch(activateMenu(menu))
+    deleteMenuDisptach: menu => dispatch(deleteMenu(menu)),
+    activateMenuDispatch: menu => dispatch(activateMenu(menu))
   };
 };
 
@@ -61,8 +53,5 @@ export default compose(
     mapStateToProps,
     mapDispatchToProps
   ),
-  firestoreConnect([
-    { collection: "menu", orderBy: ["createdAt", "desc"] },
-    { collection: "notifications", limit: 3, orderBy: ["time", "desc"] }
-  ])
+  firestoreConnect([{ collection: "menu", orderBy: ["createdAt", "desc"] }])
 )(SuperAdminDashboard);

@@ -30,6 +30,9 @@ class MenuItemDetail extends Component {
               <small>{menuItem.description}</small>
             </div>
             <div>{formatePrice(menuItem.price)}</div>
+            <small className="float-right">
+              Created By - <em>{menuItem.authorFirstName}</em>
+            </small>
           </div>
         </Card.Body>
       </Card>

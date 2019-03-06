@@ -33,6 +33,7 @@ class SignedInLinks extends React.Component {
               </Nav.Item>
             );
           })}
+
           <Nav.Item>
             <Link to={"/"} onClick={signOut}>
               Log Out
@@ -40,7 +41,7 @@ class SignedInLinks extends React.Component {
           </Nav.Item>
 
           <Nav.Item>
-            <Link to="/" className="user-img">
+            <Link to="/">
               {profile.initials} <small>{profile.flat}</small>
             </Link>
           </Nav.Item>
